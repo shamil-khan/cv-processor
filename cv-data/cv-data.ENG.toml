@@ -1,0 +1,104 @@
+[[sections]]
+type = "personal-section"
+name = "Home"
+title = "Home"
+
+[sections.info]
+name = "Simple Name"
+titles = [ "Principal Software Engineer", "Platform Architect", "AI Product Builder" ]
+location = "Austin, TX, USA"
+phone = "+1 (512) 555-0189"
+email = "simple.name@example.com"
+
+[[sections.info.social]]
+linkedin = "linkedin.com/in/simple-name"
+
+[[sections.info.social]]
+github = "github.com/simple-name"
+
+[[sections.info.social]]
+twitter = "@simplebuilds"
+
+[[sections]]
+type = "value-section"
+name = "About"
+title = "About Me"
+value = "Product-minded software engineer with 14+ years of experience designing cloud-native systems and leading cross-functional teams. Strong background in distributed architecture, frontend and backend delivery, and practical AI integrations. Known for turning ambiguous requirements into reliable, maintainable platforms that scale with business growth."
+
+[[sections]]
+type = "label-values-section"
+name = "Skills"
+title = "Skills"
+
+[[sections.labels]]
+label = "Programming"
+values = [ "TypeScript", "JavaScript", "Go", "Python", "C#", "SQL" ]
+
+[[sections]]
+type = "experience-section"
+name = "Experience"
+title = "Experience"
+
+[[sections.experiences]]
+position = "Principal Software Engineer"
+company = "Northstar Labs"
+location = "Austin, TX"
+country = "USA"
+highlights = [ "Led platform modernization from monolith to domain-aligned services, reducing deployment time by 65%.", "Introduced a unified design system and frontend architecture that improved feature delivery predictability.", "Built AI-assisted support workflows that reduced first-response time by 38%.", "Mentored 9 engineers across backend, frontend, and DevOps tracks." ]
+
+[sections.experiences.duration]
+from = "2022"
+to = "Present"
+
+[[sections.experiences.techs]]
+label = "Data & Messaging"
+values = [ "PostgreSQL", "Redis", "MongoDB", "Kafka", "RabbitMQ" ]
+
+[[sections]]
+type = "education-section"
+name = "Education"
+title = "Education"
+
+[[sections.educations]]
+institution = "Northeastern University"
+degree = "MS in Software Engineering"
+field = "Software Architecture"
+courses = [ "OOPs", "RDMBS", "Software Engineering", "Networking" ]
+highlights = [ "Graduate Merit Scholarship", "Capstone on distributed service resilience" ]
+
+[sections.educations.duration]
+from = "2009"
+to = "2011"
+
+[[sections]]
+type = "label-value2-section"
+name = "Awards"
+title = "Awards & Recognition"
+
+[[sections.labels]]
+label = "Engineering Excellence Award"
+value1 = "2 Weeks Notice"
+value2 = "2024"
+
+[[sections.labels]]
+label = "Platform Reliability Champion"
+value1 = "Orbit Commerce"
+value2 = "2021"
+
+[[sections.labels]]
+label = "Best Graduate Capstone"
+value1 = "Northeastern University"
+value2 = "2011"
+
+[[sections]]
+type = "label-value1-section"
+name = "Additional"
+title = "Addtional Info"
+
+[[sections.labels]]
+label = "Availability"
+value1 = "2 Weeks Notice"
+
+[[sections.labels]]
+label = "References"
+value1 = "Availabel upon request"

@@ -1,0 +1,108 @@
+[[sections]]
+type = "personal-section"
+name = "Home"
+title = "Home"
+
+[sections.info]
+name = "سادہ نام"
+titles = [ "پرنسپل سافٹ ویئر انجینئر", "پلیٹ فارم آرکیٹیکٹ", "اے آئی پروڈکٹ بلڈر" ]
+location = "آسٹن، ٹیکساس، امریکہ"
+phone = "+1 (512) 555-0189"
+email = "simple.name@example.com"
+
+[[sections.info.social]]
+linkedin = "linkedin.com/in/simple-name"
+
+[[sections.info.social]]
+github = "github.com/simple-name"
+
+[[sections.info.social]]
+twiiter = "@simplebuilds"
+
+[[sections]]
+type = "value-section"
+name = "تعارف"
+title = "میرے بارے میں"
+value = "پروڈکٹ پر مبنی سافٹ ویئر انجینئر جس کے پاس کلاؤڈ نیٹیو سسٹمز ڈیزائن کرنے اور کراس فنکشنل ٹیموں کی قیادت کرنے کا 14 سال سے زیادہ کا تجربہ ہے۔ ڈسٹری بیوٹڈ آرکیٹیکچر، فرنٹ اینڈ اور بیک اینڈ ڈیلیوری، اور عملی AI انٹیگریشنز میں مضبوط مہارت۔ مبہم ضروریات کو قابل بھروسہ اور پائیدار پلیٹ فارمز میں تبدیل کرنے کے لیے مشہور جو کاروباری ترقی کے ساتھ پھیل سکیں۔"
+
+[[sections]]
+type = "label-values-section"
+name = "مہارتیں"
+title = "مہارتیں"
+
+[[sections.labels]]
+label = "پروگرامنگ"
+values = [ "TypeScript", "JavaScript", "Go", "Python", "C#", "SQL" ]
+
+[[sections.labels]]
+label = "آرکیٹیکچر"
+values = [ "مائیکروسروسز", "ڈومین ڈرون ڈیزائن", "ایونٹ ڈرون سسٹمز", "API ڈیزائن" ]
+
+[[sections]]
+type = "experience-section"
+name = "تجربہ"
+title = "تجربہ"
+
+[[sections.experiences]]
+position = "پرنسپل سافٹ ویئر انجینئر"
+company = "نارتھ سٹار لیبز"
+location = "آسٹن، ٹیکساس"
+country = "USA"
+highlights = [ "پلیٹ فارم کو مونو لیتھ سے ڈومین کے مطابق سروسز پر منتقل کرنے کی قیادت کی، جس سے تعیناتی کے وقت میں 65 فیصد کمی آئی۔", "ایک متحد ڈیزائن سسٹم اور فرنٹ اینڈ آرکیٹیکچر متعارف کرایا جس نے فیچر ڈیلیوری کو بہتر بنایا۔", "AI کی مدد سے چلنے والے سپورٹ ورک فلوز بنائے جن سے پہلے رسپانس کے وقت میں 38 فیصد کمی آئی۔", "بیک اینڈ، فرنٹ اینڈ اور ڈیواپس کے شعبوں میں 9 انجینئرز کی رہنمائی کی۔" ]
+
+[sections.experiences.duration]
+from = "2022"
+to = "تاحال"
+
+[[sections.experiences.techs]]
+label = "Data & Messaging"
+values = [ "PostgreSQL", "Redis", "MongoDB", "Kafka", "RabbitMQ" ]
+
+[[sections]]
+type = "education-section"
+name = "تعلیم"
+title = "تعلیم"
+
+[[sections.educations]]
+institution = "نارتھ ایسٹرن یونیورسٹی"
+degree = "ایم ایس سافٹ ویئر انجینئرنگ"
+field = "سافٹ ویئر آرکیٹیکچر"
+courses = [ "OOPs", "RDMBS", "Software Engineering", "Networking" ]
+highlights = [ "گریجویٹ میرٹ اسکالرشپ", "ڈسٹری بیوٹڈ سروس ریزیلینس پر کیپ اسٹون پروجیکٹ" ]
+
+[sections.educations.duration]
+from = "2009"
+to = "2011"
+
+[[sections]]
+type = "label-value2-section"
+name = "ایوارڈز"
+title = "ایوارڈز"
+
+[[sections.labels]]
+label = "انجینئرنگ ایکسی لینس ایوارڈ"
+value1 = "نارتھ سٹار لیبز"
+value2 = "2024"
+
+[[sections.labels]]
+label = "پلیٹ فارم ریلائیبلٹی چیمپئن"
+value1 = "آربٹ کامرس"
+value2 = "2021"
+
+[[sections.labels]]
+label = "بہترین گریجویٹ کیپ اسٹون"
+value1 = "نارتھ ایسٹرن یونیورسٹی"
+value2 = "2011"
+
+[[sections]]
+type = "label-value1-section"
+name = "اضافی"
+title = "اضافی"
+
+[[sections.labels]]
+label = "دستیابی"
+value1 = "2 ہفتے کا نوٹس"
+
+[[sections.labels]]
+label = "حوالہ جات"
+value1 = "درخواست پر دستیاب ہیں"

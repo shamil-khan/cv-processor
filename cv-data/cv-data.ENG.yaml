@@ -1,0 +1,103 @@
+sections:
+  - type: personal-section
+    name: Home
+    title: Home
+    info:
+      name: Simple Name
+      titles:
+        - Principal Software Engineer
+        - Platform Architect
+        - AI Product Builder
+      location: Austin, TX, USA
+      phone: +1 (512) 555-0189
+      email: simple.name@example.com
+      social:
+        - linkedin: linkedin.com/in/simple-name
+        - github: github.com/simple-name
+        - twitter: "@simplebuilds"
+  - type: value-section
+    name: About
+    title: About Me
+    value: Product-minded software engineer with 14+ years of experience designing
+      cloud-native systems and leading cross-functional teams. Strong background
+      in distributed architecture, frontend and backend delivery, and practical
+      AI integrations. Known for turning ambiguous requirements into reliable,
+      maintainable platforms that scale with business growth.
+  - type: label-values-section
+    name: Skills
+    title: Skills
+    labels:
+      - label: Programming
+        values:
+          - TypeScript
+          - JavaScript
+          - Go
+          - Python
+          - C#
+          - SQL
+  - type: experience-section
+    name: Experience
+    title: Experience
+    experiences:
+      - position: Principal Software Engineer
+        company: Northstar Labs
+        location: Austin, TX
+        country: USA
+        duration:
+          from: "2022"
+          to: Present
+        techs:
+          - label: Data & Messaging
+            values:
+              - PostgreSQL
+              - Redis
+              - MongoDB
+              - Kafka
+              - RabbitMQ
+        highlights:
+          - Led platform modernization from monolith to domain-aligned services,
+            reducing deployment time by 65%.
+          - Introduced a unified design system and frontend architecture that
+            improved feature delivery predictability.
+          - Built AI-assisted support workflows that reduced first-response time
+            by 38%.
+          - Mentored 9 engineers across backend, frontend, and DevOps tracks.
+  - type: education-section
+    name: Education
+    title: Education
+    educations:
+      - institution: Northeastern University
+        degree: MS in Software Engineering
+        field: Software Architecture
+        duration:
+          from: "2009"
+          to: "2011"
+        courses:
+          - OOPs
+          - RDMBS
+          - Software Engineering
+          - Networking
+        highlights:
+          - Graduate Merit Scholarship
+          - Capstone on distributed service resilience
+  - type: label-value2-section
+    name: Awards
+    title: Awards & Recognition
+    labels:
+      - label: Engineering Excellence Award
+        value1: 2 Weeks Notice
+        value2: "2024"
+      - label: Platform Reliability Champion
+        value1: Orbit Commerce
+        value2: "2021"
+      - label: Best Graduate Capstone
+        value1: Northeastern University
+        value2: "2011"
+  - type: label-value1-section
+    name: Additional
+    title: Addtional Info
+    labels:
+      - label: Availability
+        value1: 2 Weeks Notice
+      - label: References
+        value1: Availabel upon request

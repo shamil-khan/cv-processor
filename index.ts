@@ -1,5 +1,5 @@
 import { CVDocumentParserFacade } from "@/CVProcessor";
-import rawCV from "./cv-data.ENG.json" with { type: "json" };
+import rawCV from "./cv-data.UR.json" with { type: "json" };
 
 function main(): void {
   const cvDocument = CVDocumentParserFacade.parse(rawCV);

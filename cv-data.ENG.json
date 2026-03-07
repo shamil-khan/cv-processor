@@ -92,7 +92,7 @@
       "type": "label-value2-section",
       "name": "Awards",
       "title": "Awards & Recognition",
-      "items": [
+      "labels": [
         {
           "label": "Engineering Excellence Award",
           "value1": "2 Weeks Notice",
@@ -114,7 +114,7 @@
       "type": "label-value1-section",
       "name": "Additional",
       "title": "Addtional Info",
-      "items": [
+      "labels": [
         {
           "label": "Availability",
           "value1": "2 Weeks Notice"

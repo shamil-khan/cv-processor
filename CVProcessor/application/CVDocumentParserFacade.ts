@@ -1,16 +1,17 @@
 import type { CVDocument } from "@/CVProcessor/domain";
-import { LoggerFactory } from "@/CVProcessor/logging";
-import {
-  AuthoringInputNormalizer,
-  AuthoringProfileRegistry,
-} from "@/CVProcessor/normalization";
-import { CVDocumentParser, SectionParserFactory } from "@/CVProcessor/parsing";
+import type { AppLogger } from "@/CVProcessor/logging";
+import { AuthoringInputNormalizer } from "@/CVProcessor/normalization";
+import { CVDocumentParser } from "@/CVProcessor/parsing";
 
 export class CVDocumentParserFacade {
-  private static readonly logger = LoggerFactory.getLogger("CVDocumentParserFacade");
+  constructor(
+    private readonly sectionParser: CVDocumentParser,
+    private readonly normalizer: AuthoringInputNormalizer,
+    private readonly logger: AppLogger,
+  ) {}
 
-  static parse(input: unknown): CVDocument {
-    const sectionParser = new CVDocumentParser(SectionParserFactory.createDefault());
+  parse(input: unknown): CVDocument {
+    const sectionParser = this.sectionParser;
 
     if (this.isCanonicalDocument(input)) {
       this.logger.info("canonical document detected");
@@ -34,9 +35,7 @@ export class CVDocumentParserFacade {
     this.logger.info("authoring document detected");
 
     try {
-      const normalizer = new AuthoringInputNormalizer(
-        AuthoringProfileRegistry.createDefault(),
-      );
+      const normalizer = this.normalizer;
 
       const document = normalizer.normalize(input);
 
@@ -53,7 +52,7 @@ export class CVDocumentParserFacade {
     }
   }
 
-  private static isCanonicalDocument(input: unknown): boolean {
+  private isCanonicalDocument(input: unknown): boolean {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
       return false;
     }
@@ -63,7 +62,7 @@ export class CVDocumentParserFacade {
     return Array.isArray(record.sections);
   }
 
-  private static extractErrorMessage(error: unknown): string {
+  private extractErrorMessage(error: unknown): string {
     return error instanceof Error ? error.message : "unknown error";
   }
 }

@@ -1,5 +1,5 @@
 import type { CVDocument, SectionType } from "@/CVProcessor/domain";
-import { LoggerFactory, type AppLogger } from "@/CVProcessor/logging";
+import type { AppLogger } from "@/CVProcessor/logging";
 import { JsonValueReader, ParseContext, ValidationRules } from "@/CVProcessor/validation";
 import { CVDocumentBuilder } from "./CVDocumentBuilder";
 import { SectionParserFactory } from "./SectionParserFactory";
@@ -7,7 +7,7 @@ import { SectionParserFactory } from "./SectionParserFactory";
 export class CVDocumentParser {
   constructor(
     private readonly parserFactory: SectionParserFactory,
-    private readonly logger: AppLogger = LoggerFactory.getLogger("CVDocumentParser"),
+    private readonly logger: AppLogger,
   ) {}
 
   parse(input: unknown): CVDocument {

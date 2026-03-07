@@ -4,15 +4,14 @@ import {
   CVContentFormatResolver,
 } from "@/CVProcessor/deserialization";
 import type { CVDocument } from "@/CVProcessor/domain";
-import { LoggerFactory, type AppLogger } from "@/CVProcessor/logging";
+import type { AppLogger } from "@/CVProcessor/logging";
 import { CVDocumentParserFacade } from "./CVDocumentParserFacade";
 
 export class CVDocumentContentParserFacade {
   constructor(
-    private readonly deserializerFactory: CVContentDeserializerFactory = CVContentDeserializerFactory.createDefault(),
-    private readonly logger: AppLogger = LoggerFactory.getLogger(
-      "CVDocumentContentParserFacade",
-    ),
+    private readonly deserializerFactory: CVContentDeserializerFactory,
+    private readonly documentParser: CVDocumentParserFacade,
+    private readonly logger: AppLogger,
   ) {}
 
   parse(content: string, format: CVContentFormat): CVDocument {
@@ -24,7 +23,7 @@ export class CVDocumentContentParserFacade {
     try {
       const deserializer = this.deserializerFactory.getDeserializer(format);
       const rawDocument = deserializer.deserialize(content);
-      const parsedDocument = CVDocumentParserFacade.parse(rawDocument);
+      const parsedDocument = this.documentParser.parse(rawDocument);
 
       this.logger.info("content parsing succeeded", {
         format,

@@ -23,17 +23,15 @@ import type {
   SocialEntry,
   ValueSection,
 } from "@/CVProcessor/domain";
-import { LoggerFactory, type AppLogger } from "@/CVProcessor/logging";
+import type { AppLogger } from "@/CVProcessor/logging";
 import type { UnknownRecord } from "@/CVProcessor/validation";
 import type { AuthoringProfile } from "./AuthoringProfile";
 import { AuthoringProfileRegistry } from "./AuthoringProfileRegistry";
 
 export class AuthoringInputNormalizer {
   constructor(
-    private readonly profileRegistry: AuthoringProfileRegistry = AuthoringProfileRegistry.createDefault(),
-    private readonly logger: AppLogger = LoggerFactory.getLogger(
-      "AuthoringInputNormalizer",
-    ),
+    private readonly profileRegistry: AuthoringProfileRegistry,
+    private readonly logger: AppLogger,
   ) {}
 
   normalize(input: unknown): CVDocument {

@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { CVDocumentContentParserFacade, LoggerFactory } from "@/CVProcessor";
+import { createCVProcessorContainer, CVDocumentContentParserFacade } from "@/CVProcessor";
 
 function main(): void {
-  const logger = LoggerFactory.getLogger("Main");
+  const container = createCVProcessorContainer();
+  const logger = container.resolve("rootLogger").child({ scope: "Main" });
   const args = process.argv.slice(2).filter((arg) => arg !== "--");
   const inputPath = args[0] ?? "./cv-data/cv-data.user.EN.yaml";
   const absolutePath = resolve(inputPath);
@@ -12,7 +13,9 @@ function main(): void {
 
   try {
     const rawContent = readFileSync(absolutePath, "utf8");
-    const contentParser = new CVDocumentContentParserFacade();
+    const contentParser = container.resolve<CVDocumentContentParserFacade>(
+      "cvDocumentContentParserFacade",
+    );
     const cvDocument = contentParser.parseByFilePath(rawContent, inputPath);
 
     logger.info("cv parsing completed", {

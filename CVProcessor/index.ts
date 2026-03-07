@@ -1,4 +1,5 @@
 export * from "./application";
+export * from "./di";
 export * from "./deserialization";
 export * from "./domain";
 export * from "./logging";

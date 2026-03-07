@@ -3,5 +3,8 @@ export * from "./ValueSectionParser";
 export * from "./LabelValuesSectionParser";
 export * from "./ExperienceSectionParser";
 export * from "./EducationSectionParser";
+export * from "./ProjectsSectionParser";
+export * from "./CertificationsSectionParser";
+export * from "./InterestsSectionParser";
 export * from "./LabelValue1SectionParser";
 export * from "./LabelValue2SectionParser";

@@ -1,5 +1,9 @@
 import type { ValueSection } from "@/CVProcessor/domain";
-import { JsonValueReader, type ParseContext, type UnknownRecord } from "@/CVProcessor/validation";
+import {
+  JsonValueReader,
+  type ParseContext,
+  type UnknownRecord,
+} from "@/CVProcessor/validation";
 import { BaseSectionParser, type SectionBase } from "../BaseSectionParser";
 
 export class ValueSectionParser extends BaseSectionParser<"value-section", ValueSection> {

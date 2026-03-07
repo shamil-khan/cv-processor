@@ -1,5 +1,9 @@
 import type { CVSection, SectionType } from "@/CVProcessor/domain";
-import { JsonValueReader, ParseContext, type UnknownRecord } from "@/CVProcessor/validation";
+import {
+  JsonValueReader,
+  ParseContext,
+  type UnknownRecord,
+} from "@/CVProcessor/validation";
 import type { SectionParser } from "./SectionParser";
 
 export type SectionBase<TType extends SectionType> = {
@@ -12,8 +16,7 @@ export type SectionBase<TType extends SectionType> = {
 export abstract class BaseSectionParser<
   TType extends SectionType,
   TSection extends CVSection & { type: TType },
-> implements SectionParser<TSection>
-{
+> implements SectionParser<TSection> {
   abstract readonly type: TType;
 
   parse(section: UnknownRecord, index: number): TSection {

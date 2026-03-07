@@ -1,11 +1,14 @@
 import type { SectionType } from "@/CVProcessor/domain";
 import {
+  CertificationsSectionParser,
   EducationSectionParser,
   ExperienceSectionParser,
+  InterestsSectionParser,
   LabelValue1SectionParser,
   LabelValue2SectionParser,
   LabelValuesSectionParser,
   PersonalSectionParser,
+  ProjectsSectionParser,
   ValueSectionParser,
 } from "./parsers";
 import type { SectionParser } from "./SectionParser";
@@ -26,6 +29,9 @@ export class SectionParserFactory {
       new LabelValuesSectionParser(),
       new ExperienceSectionParser(),
       new EducationSectionParser(),
+      new ProjectsSectionParser(),
+      new CertificationsSectionParser(),
+      new InterestsSectionParser(),
       new LabelValue2SectionParser(),
       new LabelValue1SectionParser(),
     ]);

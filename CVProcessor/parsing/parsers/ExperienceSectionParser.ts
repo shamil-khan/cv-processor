@@ -1,5 +1,9 @@
 import type { ExperienceSection } from "@/CVProcessor/domain";
-import { JsonValueReader, type ParseContext, type UnknownRecord } from "@/CVProcessor/validation";
+import {
+  JsonValueReader,
+  type ParseContext,
+  type UnknownRecord,
+} from "@/CVProcessor/validation";
 import { BaseSectionParser, type SectionBase } from "../BaseSectionParser";
 import { SectionValueParser } from "../SectionValueParser";
 

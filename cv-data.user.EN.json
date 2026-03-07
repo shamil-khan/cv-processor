@@ -1,0 +1,103 @@
+{
+  "name": "Simple Name",
+  "titles": ["Principal Software Engineer", "Platform Architect", "AI Product Builder"],
+  "location": "Austin, TX",
+  "country": "USA",
+  "phone": "+1 (512) 555-0189",
+  "email": "simple.name@example.com",
+  "photo": "https://example.com/photos/simple-name.jpg",
+  "social": {
+    "linkedin": "linkedin.com/in/simple-name",
+    "github": "github.com/simple-name",
+    "twitter": "@simplebuilds",
+    "youtube": "youtube.com/@simplebuilds"
+  },
+  "summary": "Product-minded software engineer with 14+ years of experience designing cloud-native systems and leading cross-functional teams. Strong background in distributed architecture, frontend and backend delivery, and practical AI integrations.",
+  "skills": [
+    {
+      "category": "Programming",
+      "items": ["TypeScript", "JavaScript", "Go", "Python", "C#", "SQL"]
+    },
+    {
+      "category": "Frameworks",
+      "items": ["React", "Next.js", "Node.js", "NestJS", ".NET", "Express"]
+    },
+    {
+      "category": "Cloud & DevOps",
+      "items": ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "ArgoCD"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Northstar Labs",
+      "location": "Austin, TX",
+      "country": "USA",
+      "position": "Principal Software Engineer",
+      "duration": {
+        "from": "2022",
+        "to": "Present"
+      },
+      "techs": [
+        {
+          "category": "Cloud",
+          "items": ["AWS", "Kubernetes", "Terraform"]
+        },
+        {
+          "category": "Data & Messaging",
+          "items": ["PostgreSQL", "Redis", "Kafka"]
+        }
+      ],
+      "highlights": [
+        "Led platform modernization from monolith to domain-aligned services.",
+        "Introduced a unified frontend architecture that improved delivery predictability."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Northeastern University",
+      "degree": "MS in Software Engineering",
+      "field": "Software Architecture",
+      "location": "Boston, MA",
+      "country": "USA",
+      "duration": {
+        "from": "2009",
+        "to": "2011"
+      },
+      "courses": ["OOP", "Distributed Systems", "Networking"],
+      "highlights": ["Graduate Merit Scholarship", "Capstone on service resilience"]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Engineering Excellence Award",
+      "issuer": "Northstar Labs",
+      "year": "2024"
+    }
+  ],
+  "additional": {
+    "availability": "2 Weeks Notice",
+    "references": "Available upon request"
+  },
+  "projects": [
+    {
+      "name": "CV Processor",
+      "title": "Multi-language CV Normalization",
+      "logo": "https://example.com/logos/cv-processor.png",
+      "detail": "Transforms user-friendly multilingual CV input into canonical UI-ready schema.",
+      "githubRepo": "github.com/simple-name/cv-processor",
+      "techs": ["TypeScript", "Node.js", "JSON", "YAML"],
+      "snapshot": "https://example.com/screenshots/cv-processor-home.png"
+    }
+  ],
+  "certifications": [
+    {
+      "title": "AWS Certified Solutions Architect",
+      "year": "2023",
+      "logo": "https://example.com/logos/aws-saa.png",
+      "issuer": "Amazon Web Services",
+      "onlineLink": "https://example.com/certs/aws-saa"
+    }
+  ],
+  "interests": ["AI", "Movies", "Books", "Football"]
+}

@@ -46,10 +46,7 @@ export class CVDocumentParser {
     const nextCount = (sectionTypeCount.get(sectionType) ?? 0) + 1;
     sectionTypeCount.set(sectionType, nextCount);
 
-    if (
-      ValidationRules.isSingleInstanceSectionType(sectionType) &&
-      nextCount > 1
-    ) {
+    if (ValidationRules.isSingleInstanceSectionType(sectionType) && nextCount > 1) {
       throw new Error(
         `${sectionTypeContext} has duplicate ${sectionType}; it can appear only once.`,
       );

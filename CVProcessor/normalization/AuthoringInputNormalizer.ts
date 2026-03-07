@@ -23,6 +23,7 @@ import type {
   SocialEntry,
   ValueSection,
 } from "@/CVProcessor/domain";
+import { LoggerFactory, type AppLogger } from "@/CVProcessor/logging";
 import type { UnknownRecord } from "@/CVProcessor/validation";
 import type { AuthoringProfile } from "./AuthoringProfile";
 import { AuthoringProfileRegistry } from "./AuthoringProfileRegistry";
@@ -30,11 +31,20 @@ import { AuthoringProfileRegistry } from "./AuthoringProfileRegistry";
 export class AuthoringInputNormalizer {
   constructor(
     private readonly profileRegistry: AuthoringProfileRegistry = AuthoringProfileRegistry.createDefault(),
+    private readonly logger: AppLogger = LoggerFactory.getLogger(
+      "AuthoringInputNormalizer",
+    ),
   ) {}
 
   normalize(input: unknown): CVDocument {
     const documentRecord = this.toRecord(input);
     const profile = this.profileRegistry.resolve(documentRecord);
+
+    this.logger.info("authoring profile resolved", {
+      profile: profile.id,
+      direction: profile.direction,
+    });
+
     const personalSources = this.getPersonalSources(documentRecord, profile);
     const requiredName = this.readStringFromSources(
       personalSources,
@@ -42,6 +52,7 @@ export class AuthoringInputNormalizer {
     );
 
     if (!requiredName) {
+      this.logger.error("personal name is missing");
       throw new Error("name is required.");
     }
 
@@ -60,6 +71,9 @@ export class AuthoringInputNormalizer {
 
     if (summarySection) {
       sections.push(summarySection);
+      this.logSectionFound(summarySection.type);
+    } else {
+      this.logSectionMissing("value-section");
     }
 
     const skillsSection = this.buildSkillsSection(
@@ -70,6 +84,11 @@ export class AuthoringInputNormalizer {
 
     if (skillsSection) {
       sections.push(skillsSection);
+      this.logSectionFound(skillsSection.type, {
+        labels: skillsSection.labels.length,
+      });
+    } else {
+      this.logSectionMissing("label-values-section");
     }
 
     const experienceSection = this.buildExperienceSection(
@@ -80,6 +99,11 @@ export class AuthoringInputNormalizer {
 
     if (experienceSection) {
       sections.push(experienceSection);
+      this.logSectionFound(experienceSection.type, {
+        experiences: experienceSection.experiences.length,
+      });
+    } else {
+      this.logSectionMissing("experience-section");
     }
 
     const educationSection = this.buildEducationSection(
@@ -90,6 +114,11 @@ export class AuthoringInputNormalizer {
 
     if (educationSection) {
       sections.push(educationSection);
+      this.logSectionFound(educationSection.type, {
+        educations: educationSection.educations.length,
+      });
+    } else {
+      this.logSectionMissing("education-section");
     }
 
     const awardsSection = this.buildAwardsSection(
@@ -100,6 +129,11 @@ export class AuthoringInputNormalizer {
 
     if (awardsSection) {
       sections.push(awardsSection);
+      this.logSectionFound(awardsSection.type, {
+        labels: awardsSection.labels.length,
+      });
+    } else {
+      this.logSectionMissing("label-value2-section");
     }
 
     const additionalSection = this.buildAdditionalSection(
@@ -110,6 +144,11 @@ export class AuthoringInputNormalizer {
 
     if (additionalSection) {
       sections.push(additionalSection);
+      this.logSectionFound(additionalSection.type, {
+        labels: additionalSection.labels.length,
+      });
+    } else {
+      this.logSectionMissing("label-value1-section");
     }
 
     const projectsSection = this.buildProjectsSection(
@@ -120,6 +159,11 @@ export class AuthoringInputNormalizer {
 
     if (projectsSection) {
       sections.push(projectsSection);
+      this.logSectionFound(projectsSection.type, {
+        projects: projectsSection.projects.length,
+      });
+    } else {
+      this.logSectionMissing("projects-section");
     }
 
     const certificationsSection = this.buildCertificationsSection(
@@ -130,6 +174,11 @@ export class AuthoringInputNormalizer {
 
     if (certificationsSection) {
       sections.push(certificationsSection);
+      this.logSectionFound(certificationsSection.type, {
+        certifications: certificationsSection.certifications.length,
+      });
+    } else {
+      this.logSectionMissing("certifications-section");
     }
 
     const interestsSection = this.buildInterestsSection(
@@ -140,7 +189,16 @@ export class AuthoringInputNormalizer {
 
     if (interestsSection) {
       sections.push(interestsSection);
+      this.logSectionFound(interestsSection.type, {
+        items: interestsSection.items.length,
+      });
+    } else {
+      this.logSectionMissing("interests-section");
     }
+
+    this.logger.info("authoring normalization completed", {
+      sections: sections.length,
+    });
 
     return { sections };
   }
@@ -205,9 +263,14 @@ export class AuthoringInputNormalizer {
     sectionTypeCount: Map<SectionType, number>,
   ): LabelValuesSection | undefined {
     const skillRecords = this.readRecordArray(documentRecord, profile.aliases.skills);
+
+    this.logger.debug("skills entries discovered", {
+      entries: skillRecords.length,
+    });
+
     const labels: LabelValues[] = [];
 
-    skillRecords.forEach((skillRecord) => {
+    skillRecords.forEach((skillRecord, skillIndex) => {
       const label =
         this.readString(skillRecord, profile.aliases.category) ??
         this.readString(skillRecord, profile.aliases.label) ??
@@ -218,6 +281,10 @@ export class AuthoringInputNormalizer {
         labels.push({
           label,
           values,
+        });
+      } else {
+        this.logger.warn("skills entry rejected due to missing label and values", {
+          entryIndex: skillIndex,
         });
       }
     });
@@ -246,10 +313,19 @@ export class AuthoringInputNormalizer {
       documentRecord,
       profile.aliases.experience,
     );
+
+    this.logger.debug("experience entries discovered", {
+      entries: experienceRecords.length,
+    });
+
     const experiences: ExperienceEntry[] = [];
 
-    experienceRecords.forEach((experienceRecord) => {
-      const duration = this.parseDuration(experienceRecord, profile);
+    experienceRecords.forEach((experienceRecord, experienceIndex) => {
+      const duration = this.parseDuration(
+        experienceRecord,
+        profile,
+        `experience[${experienceIndex}]`,
+      );
       const techs = this.parseTechLabels(experienceRecord, profile);
       const highlights = this.readStringArray(
         experienceRecord,
@@ -266,8 +342,14 @@ export class AuthoringInputNormalizer {
         highlights,
       };
 
+      this.logExperienceFieldGaps(experience, experienceIndex);
+
       if (this.hasMeaningfulExperience(experience)) {
         experiences.push(experience);
+      } else {
+        this.logger.warn("experience entry rejected due to insufficient data", {
+          entryIndex: experienceIndex,
+        });
       }
     });
 
@@ -295,10 +377,19 @@ export class AuthoringInputNormalizer {
       documentRecord,
       profile.aliases.education,
     );
+
+    this.logger.debug("education entries discovered", {
+      entries: educationRecords.length,
+    });
+
     const educations: EducationEntry[] = [];
 
-    educationRecords.forEach((educationRecord) => {
-      const duration = this.parseDuration(educationRecord, profile);
+    educationRecords.forEach((educationRecord, educationIndex) => {
+      const duration = this.parseDuration(
+        educationRecord,
+        profile,
+        `education[${educationIndex}]`,
+      );
       const education: EducationEntry = {
         institution: this.readString(educationRecord, profile.aliases.institution) ?? "",
         degree: this.readString(educationRecord, profile.aliases.degree) ?? "",
@@ -310,8 +401,14 @@ export class AuthoringInputNormalizer {
         highlights: this.readStringArray(educationRecord, profile.aliases.highlights),
       };
 
+      this.logEducationFieldGaps(education, educationIndex);
+
       if (this.hasMeaningfulEducation(education)) {
         educations.push(education);
+      } else {
+        this.logger.warn("education entry rejected due to insufficient data", {
+          entryIndex: educationIndex,
+        });
       }
     });
 
@@ -608,20 +705,48 @@ export class AuthoringInputNormalizer {
     return this.readStringArray(projectRecord, profile.aliases.items);
   }
 
-  private parseDuration(record: UnknownRecord, profile: AuthoringProfile): Duration {
+  private parseDuration(
+    record: UnknownRecord,
+    profile: AuthoringProfile,
+    context: string,
+  ): Duration {
     const durationValue = this.readFirstValue(record, profile.aliases.duration);
 
-    if (this.isRecord(durationValue)) {
+    if (durationValue === undefined) {
+      this.logger.warn("duration field is not provided", {
+        context,
+        expected: ["from", "to"],
+      });
+
       return {
-        from: this.readString(durationValue, profile.aliases.from) ?? "",
-        to: this.readString(durationValue, profile.aliases.to) ?? "",
+        from: "",
+        to: "",
       };
+    }
+
+    if (this.isRecord(durationValue)) {
+      const from = this.readString(durationValue, profile.aliases.from) ?? "";
+      const to = this.readString(durationValue, profile.aliases.to) ?? "";
+
+      if (!from || !to) {
+        this.logger.warn("duration object is missing expected from/to", {
+          context,
+          hasFrom: Boolean(from),
+          hasTo: Boolean(to),
+        });
+      }
+
+      return { from, to };
     }
 
     if (typeof durationValue === "string") {
       const normalizedDuration = durationValue.trim();
 
       if (normalizedDuration.length === 0) {
+        this.logger.warn("duration string is empty", {
+          context,
+        });
+
         return { from: "", to: "" };
       }
 
@@ -634,11 +759,21 @@ export class AuthoringInputNormalizer {
         };
       }
 
+      this.logger.warn("duration string did not split into from/to", {
+        context,
+        value: normalizedDuration,
+      });
+
       return {
         from: normalizedDuration,
         to: "",
       };
     }
+
+    this.logger.warn("duration has unsupported data type", {
+      context,
+      type: typeof durationValue,
+    });
 
     return {
       from: "",
@@ -685,6 +820,14 @@ export class AuthoringInputNormalizer {
       if (directValue) {
         this.pushSocialEntry(entries, seen, platform, directValue);
       }
+    }
+
+    if (entries.length === 0) {
+      this.logger.warn("no social links were provided in personal section");
+    } else {
+      this.logger.info("social links parsed", {
+        links: entries.length,
+      });
     }
 
     return entries;
@@ -753,6 +896,102 @@ export class AuthoringInputNormalizer {
       certification.issuer ||
       certification.onlineLink,
     );
+  }
+
+  private logSectionFound(
+    sectionType: SectionType,
+    metadata?: Record<string, unknown>,
+  ): void {
+    this.logger.info("section parsed", {
+      sectionType,
+      ...(metadata ?? {}),
+    });
+  }
+
+  private logSectionMissing(sectionType: SectionType): void {
+    this.logger.debug("section not found", {
+      sectionType,
+    });
+  }
+
+  private logExperienceFieldGaps(experience: ExperienceEntry, entryIndex: number): void {
+    const missingFields: string[] = [];
+
+    if (!experience.position) {
+      missingFields.push("position");
+    }
+
+    if (!experience.company) {
+      missingFields.push("company");
+    }
+
+    if (!experience.duration.from) {
+      missingFields.push("duration.from");
+    }
+
+    if (!experience.duration.to) {
+      missingFields.push("duration.to");
+    }
+
+    if (experience.highlights.length === 0) {
+      missingFields.push("highlights");
+    }
+
+    if (experience.techs.length === 0) {
+      missingFields.push("techs");
+    }
+
+    if (missingFields.length > 0) {
+      this.logger.warn("experience entry has missing important fields", {
+        entryIndex,
+        missingFields,
+      });
+      return;
+    }
+
+    this.logger.debug("experience entry parsed successfully", {
+      entryIndex,
+    });
+  }
+
+  private logEducationFieldGaps(education: EducationEntry, entryIndex: number): void {
+    const missingFields: string[] = [];
+
+    if (!education.institution) {
+      missingFields.push("institution");
+    }
+
+    if (!education.degree) {
+      missingFields.push("degree");
+    }
+
+    if (!education.duration.from) {
+      missingFields.push("duration.from");
+    }
+
+    if (!education.duration.to) {
+      missingFields.push("duration.to");
+    }
+
+    if (education.courses.length === 0) {
+      missingFields.push("courses");
+    }
+
+    if (education.highlights.length === 0) {
+      missingFields.push("highlights");
+    }
+
+    if (missingFields.length > 0) {
+      this.logger.warn("education entry has missing important fields", {
+        entryIndex,
+        missingFields,
+      });
+      return;
+    }
+
+    this.logger.debug("education entry parsed successfully", {
+      entryIndex,
+    });
   }
 
   private getPersonalSources(

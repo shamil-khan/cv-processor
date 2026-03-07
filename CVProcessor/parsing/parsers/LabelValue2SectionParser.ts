@@ -1,21 +1,21 @@
-import type { LabelValue2Section } from "@/CVProcessor/domain";
-import type { ParseContext, UnknownRecord } from "@/CVProcessor/validation";
-import { BaseSectionParser, type SectionBase } from "../BaseSectionParser";
-import { SectionValueParser } from "../SectionValueParser";
+import type { LabelValue2Section } from '@/CVProcessor/domain';
+import type { ParseContext, UnknownRecord } from '@/CVProcessor/validation';
+import { BaseSectionParser, type SectionBase } from '../BaseSectionParser';
+import { SectionValueParser } from '../SectionValueParser';
 
 export class LabelValue2SectionParser extends BaseSectionParser<
-  "label-value2-section",
+  'label-value2-section',
   LabelValue2Section
 > {
-  readonly type = "label-value2-section";
+  readonly type = 'label-value2-section';
 
   protected parseContent(
     section: UnknownRecord,
     _index: number,
-    base: SectionBase<"label-value2-section">,
+    base: SectionBase<'label-value2-section'>,
     sectionContext: ParseContext,
   ): LabelValue2Section {
-    const labelsContext = sectionContext.field("labels");
+    const labelsContext = sectionContext.field('labels');
     const labelCollection = SectionValueParser.parseLabelCollection(
       section,
       sectionContext,

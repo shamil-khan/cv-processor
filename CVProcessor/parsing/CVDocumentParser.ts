@@ -1,8 +1,8 @@
-import type { CVDocument, SectionType } from "@/CVProcessor/domain";
-import type { AppLogger } from "@/CVProcessor/logging";
-import { JsonValueReader, ParseContext, ValidationRules } from "@/CVProcessor/validation";
-import { CVDocumentBuilder } from "./CVDocumentBuilder";
-import { SectionParserFactory } from "./SectionParserFactory";
+import type { CVDocument, SectionType } from '@/CVProcessor/domain';
+import type { AppLogger } from '@/CVProcessor/logging';
+import { JsonValueReader, ParseContext, ValidationRules } from '@/CVProcessor/validation';
+import { CVDocumentBuilder } from './CVDocumentBuilder';
+import { SectionParserFactory } from './SectionParserFactory';
 
 export class CVDocumentParser {
   constructor(
@@ -13,13 +13,13 @@ export class CVDocumentParser {
   parse(input: unknown): CVDocument {
     const rootContext = ParseContext.root();
     const documentRecord = JsonValueReader.readRecord(input, rootContext);
-    const sectionsContext = rootContext.field("sections");
+    const sectionsContext = rootContext.field('sections');
     const sectionRecords = JsonValueReader.readRecordArray(
       documentRecord.sections,
       sectionsContext,
     );
 
-    this.logger.info("canonical sections discovered", {
+    this.logger.info('canonical sections discovered', {
       sections: sectionRecords.length,
     });
 
@@ -30,10 +30,10 @@ export class CVDocumentParser {
       const sectionContext = sectionsContext.index(index);
       const sectionType = JsonValueReader.readSectionType(
         sectionRecord.type,
-        sectionContext.field("type"),
+        sectionContext.field('type'),
       );
 
-      this.logger.debug("section parser started", {
+      this.logger.debug('section parser started', {
         sectionType,
         sectionIndex: index,
       });
@@ -41,7 +41,7 @@ export class CVDocumentParser {
       this.validateSingleInstanceSectionType(
         sectionType,
         sectionTypeCount,
-        sectionContext.field("type"),
+        sectionContext.field('type'),
       );
 
       const parser = this.parserFactory.getParser(sectionType);
@@ -51,12 +51,12 @@ export class CVDocumentParser {
 
         builder.addSection(parsedSection);
 
-        this.logger.info("section parser succeeded", {
+        this.logger.info('section parser succeeded', {
           sectionType,
           sectionIndex: index,
         });
       } catch (error) {
-        this.logger.error("section parser failed", {
+        this.logger.error('section parser failed', {
           sectionType,
           sectionIndex: index,
           error: this.extractErrorMessage(error),
@@ -78,7 +78,7 @@ export class CVDocumentParser {
     sectionTypeCount.set(sectionType, nextCount);
 
     if (ValidationRules.isSingleInstanceSectionType(sectionType) && nextCount > 1) {
-      this.logger.warn("single-instance section duplication detected", {
+      this.logger.warn('single-instance section duplication detected', {
         sectionType,
         count: nextCount,
       });
@@ -90,6 +90,6 @@ export class CVDocumentParser {
   }
 
   private extractErrorMessage(error: unknown): string {
-    return error instanceof Error ? error.message : "unknown error";
+    return error instanceof Error ? error.message : 'unknown error';
   }
 }

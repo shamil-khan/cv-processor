@@ -1,5 +1,5 @@
-import type { CVSection, SectionType } from "@/CVProcessor/domain";
-import type { UnknownRecord } from "@/CVProcessor/validation";
+import type { CVSection, SectionType } from '@/CVProcessor/domain';
+import type { UnknownRecord } from '@/CVProcessor/validation';
 
 export interface SectionParser<TSection extends CVSection = CVSection> {
   readonly type: SectionType;

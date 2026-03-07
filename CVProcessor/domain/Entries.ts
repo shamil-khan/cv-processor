@@ -1,4 +1,4 @@
-import type { Duration, SocialEntry } from "./Shared";
+import type { Duration, SocialEntry } from './Shared';
 
 export interface Personal {
   name: string;

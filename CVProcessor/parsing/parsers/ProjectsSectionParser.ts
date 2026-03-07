@@ -1,25 +1,25 @@
-import type { ProjectsSection } from "@/CVProcessor/domain";
+import type { ProjectsSection } from '@/CVProcessor/domain';
 import {
   JsonValueReader,
   type ParseContext,
   type UnknownRecord,
-} from "@/CVProcessor/validation";
-import { BaseSectionParser, type SectionBase } from "../BaseSectionParser";
-import { SectionValueParser } from "../SectionValueParser";
+} from '@/CVProcessor/validation';
+import { BaseSectionParser, type SectionBase } from '../BaseSectionParser';
+import { SectionValueParser } from '../SectionValueParser';
 
 export class ProjectsSectionParser extends BaseSectionParser<
-  "projects-section",
+  'projects-section',
   ProjectsSection
 > {
-  readonly type = "projects-section";
+  readonly type = 'projects-section';
 
   protected parseContent(
     section: UnknownRecord,
     _index: number,
-    base: SectionBase<"projects-section">,
+    base: SectionBase<'projects-section'>,
     sectionContext: ParseContext,
   ): ProjectsSection {
-    const projectsContext = sectionContext.field("projects");
+    const projectsContext = sectionContext.field('projects');
     const projects = JsonValueReader.readRecordArray(
       section.projects,
       projectsContext,

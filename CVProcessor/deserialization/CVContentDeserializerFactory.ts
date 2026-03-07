@@ -1,10 +1,10 @@
-import type { CVContentDeserializer } from "./CVContentDeserializer";
-import type { CVContentFormat } from "./CVContentFormat";
+import type { CVContentDeserializer } from './CVContentDeserializer';
+import type { CVContentFormat } from './CVContentFormat';
 import {
   JsonContentDeserializer,
   TomlContentDeserializer,
   YamlContentDeserializer,
-} from "./deserializers";
+} from './deserializers';
 
 export class CVContentDeserializerFactory {
   private readonly deserializerRegistry = new Map<

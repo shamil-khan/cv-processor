@@ -2,10 +2,10 @@ import {
   CVContentDeserializerFactory,
   type CVContentFormat,
   CVContentFormatResolver,
-} from "@/CVProcessor/deserialization";
-import type { CVDocument } from "@/CVProcessor/domain";
-import type { AppLogger } from "@/CVProcessor/logging";
-import { CVDocumentParserFacade } from "./CVDocumentParserFacade";
+} from '@/CVProcessor/deserialization';
+import type { CVDocument } from '@/CVProcessor/domain';
+import type { AppLogger } from '@/CVProcessor/logging';
+import { CVDocumentParserFacade } from './CVDocumentParserFacade';
 
 export class CVDocumentContentParserFacade {
   constructor(
@@ -15,7 +15,7 @@ export class CVDocumentContentParserFacade {
   ) {}
 
   parse(content: string, format: CVContentFormat): CVDocument {
-    this.logger.info("content parsing started", {
+    this.logger.info('content parsing started', {
       format,
       contentLength: content.length,
     });
@@ -25,25 +25,25 @@ export class CVDocumentContentParserFacade {
       const rawDocument = deserializer.deserialize(content);
       const parsedDocument = this.documentParser.parse(rawDocument);
 
-      this.logger.info("content parsing succeeded", {
+      this.logger.info('content parsing succeeded', {
         format,
         sections: parsedDocument.sections.length,
       });
 
       return parsedDocument;
     } catch (error) {
-      this.logger.error("content parsing failed", {
+      this.logger.error('content parsing failed', {
         format,
         error: this.extractErrorMessage(error),
       });
-      throw new Error("document parsing failed");
+      throw new Error('document parsing failed');
     }
   }
 
   parseByFilePath(content: string, filePath: string): CVDocument {
     const format = CVContentFormatResolver.resolveFromFilePath(filePath);
 
-    this.logger.debug("content format resolved from file path", {
+    this.logger.debug('content format resolved from file path', {
       filePath,
       format,
     });
@@ -54,7 +54,7 @@ export class CVDocumentContentParserFacade {
   parseByContentType(content: string, contentType: string): CVDocument {
     const format = CVContentFormatResolver.resolveFromContentType(contentType);
 
-    this.logger.debug("content format resolved from content type", {
+    this.logger.debug('content format resolved from content type', {
       contentType,
       format,
     });
@@ -63,6 +63,6 @@ export class CVDocumentContentParserFacade {
   }
 
   private extractErrorMessage(error: unknown): string {
-    return error instanceof Error ? error.message : "unknown error";
+    return error instanceof Error ? error.message : 'unknown error';
   }
 }

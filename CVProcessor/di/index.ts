@@ -1,1 +1,1 @@
-export * from "./CVProcessorContainer";
+export * from './CVProcessorContainer';

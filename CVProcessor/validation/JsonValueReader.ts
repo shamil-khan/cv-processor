@@ -1,6 +1,6 @@
-import type { SectionType } from "@/CVProcessor/domain";
-import { ParseContext } from "./ParseContext";
-import { ValidationRules } from "./ValidationRules";
+import type { SectionType } from '@/CVProcessor/domain';
+import { ParseContext } from './ParseContext';
+import { ValidationRules } from './ValidationRules';
 
 export type UnknownRecord = Record<string, unknown>;
 
@@ -46,6 +46,6 @@ export class JsonValueReader {
   }
 
   private static isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 }

@@ -1,2 +1,2 @@
-export * from "./CVDocumentParserFacade";
-export * from "./CVDocumentContentParserFacade";
+export * from './CVDocumentParserFacade';
+export * from './CVDocumentContentParserFacade';

@@ -7,19 +7,19 @@ import type {
   LabelValues,
   Personal,
   ProjectEntry,
-} from "./Entries";
+} from './Entries';
 
 export type SectionType =
-  | "personal-section"
-  | "experience-section"
-  | "education-section"
-  | "projects-section"
-  | "certifications-section"
-  | "interests-section"
-  | "value-section"
-  | "label-value1-section"
-  | "label-value2-section"
-  | "label-values-section";
+  | 'personal-section'
+  | 'experience-section'
+  | 'education-section'
+  | 'projects-section'
+  | 'certifications-section'
+  | 'interests-section'
+  | 'value-section'
+  | 'label-value1-section'
+  | 'label-value2-section'
+  | 'label-values-section';
 
 export interface ISection {
   type: SectionType;
@@ -29,54 +29,54 @@ export interface ISection {
 }
 
 export interface PersonalSection extends ISection {
-  type: "personal-section";
+  type: 'personal-section';
   info: Personal;
 }
 
 export interface ValueSection extends ISection {
-  type: "value-section";
+  type: 'value-section';
   value: string;
 }
 
 export interface LabelValuesSection extends ISection {
-  type: "label-values-section";
+  type: 'label-values-section';
   labels: LabelValues[];
 }
 
 export interface ExperienceSection extends ISection {
-  type: "experience-section";
+  type: 'experience-section';
   experiences: ExperienceEntry[];
 }
 
 export interface EducationSection extends ISection {
-  type: "education-section";
+  type: 'education-section';
   educations: EducationEntry[];
 }
 
 export type EductionSection = EducationSection;
 
 export interface ProjectsSection extends ISection {
-  type: "projects-section";
+  type: 'projects-section';
   projects: ProjectEntry[];
 }
 
 export interface CertificationsSection extends ISection {
-  type: "certifications-section";
+  type: 'certifications-section';
   certifications: CertificationEntry[];
 }
 
 export interface InterestsSection extends ISection {
-  type: "interests-section";
+  type: 'interests-section';
   items: string[];
 }
 
 export interface LabelValue2Section extends ISection {
-  type: "label-value2-section";
+  type: 'label-value2-section';
   labels: LabelValue2[];
 }
 
 export interface LabelValue1Section extends ISection {
-  type: "label-value1-section";
+  type: 'label-value1-section';
   labels: LabelValue1[];
 }
 

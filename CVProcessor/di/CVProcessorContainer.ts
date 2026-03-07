@@ -1,20 +1,20 @@
-import { asFunction, asValue, createContainer, type AwilixContainer } from "awilix";
+import { asFunction, asValue, createContainer, type AwilixContainer } from 'awilix';
 import {
   CVDocumentContentParserFacade,
   CVDocumentParserFacade,
-} from "@/CVProcessor/application";
+} from '@/CVProcessor/application';
 import {
   CVContentDeserializerFactory,
   JsonContentDeserializer,
   TomlContentDeserializer,
   YamlContentDeserializer,
-} from "@/CVProcessor/deserialization";
-import { type AppLogger, LoggerFactory } from "@/CVProcessor/logging";
+} from '@/CVProcessor/deserialization';
+import { type AppLogger, LoggerFactory } from '@/CVProcessor/logging';
 import {
   AuthoringInputNormalizer,
   AuthoringProfileRegistry,
-} from "@/CVProcessor/normalization";
-import { CVDocumentParser, SectionParserFactory } from "@/CVProcessor/parsing";
+} from '@/CVProcessor/normalization';
+import { CVDocumentParser, SectionParserFactory } from '@/CVProcessor/parsing';
 
 export interface CVProcessorCradle {
   rootLogger: AppLogger;
@@ -34,14 +34,14 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
   const container = createContainer<CVProcessorCradle>();
 
   container.register({
-    rootLogger: asValue(LoggerFactory.getLogger("CVProcessor")),
+    rootLogger: asValue(LoggerFactory.getLogger('CVProcessor')),
     sectionParserFactory: asFunction(() =>
       SectionParserFactory.createDefault(),
     ).singleton(),
     cvDocumentParser: asFunction(({ sectionParserFactory, rootLogger }) => {
       return new CVDocumentParser(
         sectionParserFactory,
-        rootLogger.child({ scope: "CVDocumentParser" }),
+        rootLogger.child({ scope: 'CVDocumentParser' }),
       );
     }).singleton(),
     authoringProfileRegistry: asFunction(() => {
@@ -50,7 +50,7 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
     authoringInputNormalizer: asFunction(({ authoringProfileRegistry, rootLogger }) => {
       return new AuthoringInputNormalizer(
         authoringProfileRegistry,
-        rootLogger.child({ scope: "AuthoringInputNormalizer" }),
+        rootLogger.child({ scope: 'AuthoringInputNormalizer' }),
       );
     }).singleton(),
     jsonContentDeserializer: asFunction(() => {
@@ -76,7 +76,7 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
         return new CVDocumentParserFacade(
           cvDocumentParser,
           authoringInputNormalizer,
-          rootLogger.child({ scope: "CVDocumentParserFacade" }),
+          rootLogger.child({ scope: 'CVDocumentParserFacade' }),
         );
       },
     ).singleton(),
@@ -85,7 +85,7 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
         return new CVDocumentContentParserFacade(
           cvContentDeserializerFactory,
           cvDocumentParserFacade,
-          rootLogger.child({ scope: "CVDocumentContentParserFacade" }),
+          rootLogger.child({ scope: 'CVDocumentContentParserFacade' }),
         );
       },
     ).singleton(),

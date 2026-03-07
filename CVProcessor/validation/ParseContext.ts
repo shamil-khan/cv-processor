@@ -2,7 +2,7 @@ export class ParseContext {
   private constructor(private readonly path: string) {}
 
   static root(): ParseContext {
-    return new ParseContext("document");
+    return new ParseContext('document');
   }
 
   field(name: string): ParseContext {

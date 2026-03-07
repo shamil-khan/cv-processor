@@ -1,5 +1,11 @@
+# .prettierrc.toml
 printWidth = 90
 tabWidth = 2
 semi = true
-singleQuote = false
+singleQuote = true
 trailingComma = "all"
+bracketSpacing = true
+arrowParens = "always"
+objectWrap = "preserve"
+bracketSameLine = true
+endOfLine = "auto"

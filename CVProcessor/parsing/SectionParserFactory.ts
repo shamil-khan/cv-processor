@@ -1,4 +1,4 @@
-import type { SectionType } from "@/CVProcessor/domain";
+import type { SectionType } from '@/CVProcessor/domain';
 import {
   CertificationsSectionParser,
   EducationSectionParser,
@@ -10,8 +10,8 @@ import {
   PersonalSectionParser,
   ProjectsSectionParser,
   ValueSectionParser,
-} from "./parsers";
-import type { SectionParser } from "./SectionParser";
+} from './parsers';
+import type { SectionParser } from './SectionParser';
 
 export class SectionParserFactory {
   private readonly parserRegistry = new Map<SectionType, SectionParser>();

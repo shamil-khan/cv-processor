@@ -1,4 +1,4 @@
-export type TextDirection = "ltr" | "rtl";
+export type TextDirection = 'ltr' | 'rtl';
 
 export interface SectionCaption {
   name: string;

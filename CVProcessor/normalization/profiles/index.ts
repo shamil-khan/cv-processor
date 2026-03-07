@@ -1,2 +1,2 @@
-export * from "./englishProfile";
-export * from "./urduProfile";
+export * from './englishProfile';
+export * from './urduProfile';

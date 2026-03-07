@@ -1,6 +1,6 @@
-import type { AppLogger, LoggerMetadata } from "@/CVProcessor/logging";
+import type { AppLogger, LoggerMetadata } from '@/CVProcessor/logging';
 
-export type LogLevel = "debug" | "info" | "warn" | "error";
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export interface LogEntry {
   level: LogLevel;
@@ -19,19 +19,19 @@ export class InMemoryLogger implements AppLogger {
   }
 
   debug(message: string, metadata?: LoggerMetadata): void {
-    this.push("debug", message, metadata);
+    this.push('debug', message, metadata);
   }
 
   info(message: string, metadata?: LoggerMetadata): void {
-    this.push("info", message, metadata);
+    this.push('info', message, metadata);
   }
 
   warn(message: string, metadata?: LoggerMetadata): void {
-    this.push("warn", message, metadata);
+    this.push('warn', message, metadata);
   }
 
   error(message: string, metadata?: LoggerMetadata): void {
-    this.push("error", message, metadata);
+    this.push('error', message, metadata);
   }
 
   child(bindings: LoggerMetadata): AppLogger {

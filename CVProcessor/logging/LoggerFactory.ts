@@ -1,6 +1,6 @@
-import pino, { type LoggerOptions, type TransportTargetOptions } from "pino";
-import type { AppLogger } from "./AppLogger";
-import { PinoLoggerAdapter } from "./PinoLoggerAdapter";
+import pino, { type LoggerOptions, type TransportTargetOptions } from 'pino';
+import type { AppLogger } from './AppLogger';
+import { PinoLoggerAdapter } from './PinoLoggerAdapter';
 
 export class LoggerFactory {
   private static rootLogger: AppLogger | undefined;
@@ -12,7 +12,7 @@ export class LoggerFactory {
   private static getRootLogger(): AppLogger {
     if (!this.rootLogger) {
       this.rootLogger =
-        process.env.NODE_ENV === "production"
+        process.env.NODE_ENV === 'production'
           ? this.createRootLoggerProduction()
           : this.createRootLogger();
     }
@@ -22,7 +22,7 @@ export class LoggerFactory {
 
   private static createRootLogger(): AppLogger {
     const loggerOptions: LoggerOptions = {
-      level: process.env.LOG_LEVEL ?? "info",
+      level: process.env.LOG_LEVEL ?? 'info',
       base: undefined,
       timestamp: pino.stdTimeFunctions.isoTime,
     };
@@ -31,11 +31,11 @@ export class LoggerFactory {
 
     if (this.resolvePrettyOutputSetting()) {
       targets.push({
-        target: "pino-pretty",
+        target: 'pino-pretty',
         options: {
           colorize: true,
-          translateTime: "SYS:standard",
-          ignore: "pid,hostname",
+          translateTime: 'SYS:standard',
+          ignore: 'pid,hostname',
           singleLine: false,
         },
       });
@@ -49,7 +49,7 @@ export class LoggerFactory {
   private static createRootLoggerProduction(): AppLogger {
     // Use 'browser' config which works in hosting providers like Cloudflare's V8 isolation
     const loggerOptions: LoggerOptions = {
-      level: process.env.LOG_LEVEL ?? "info",
+      level: process.env.LOG_LEVEL ?? 'info',
       base: undefined,
       timestamp: pino.stdTimeFunctions.isoTime,
       browser: {
@@ -65,20 +65,20 @@ export class LoggerFactory {
   }
 
   private static resolvePrettyOutputSetting(): boolean {
-    if (process.env.LOG_PRETTY === "true") {
+    if (process.env.LOG_PRETTY === 'true') {
       return true;
     }
 
-    if (process.env.LOG_PRETTY === "false") {
+    if (process.env.LOG_PRETTY === 'false') {
       return false;
     }
 
-    return process.env.NODE_ENV !== "production";
+    return process.env.NODE_ENV !== 'production';
   }
 
   private static resolveLogFileTransport(): TransportTargetOptions {
     // Generate timestamp string: YYYY-MM-DD
-    const timestamp = new Date().toISOString().split("T")[0]; // Remove time
+    const timestamp = new Date().toISOString().split('T')[0]; // Remove time
 
     // Generate timestamp string: YYYY-MM-DD-HH-mm-ss
     // const timestamp = new Date()
@@ -87,8 +87,8 @@ export class LoggerFactory {
     //   .split(".")[0]; // Remove milliseconds
 
     return {
-      target: "pino/file",
-      level: process.env.LOG_LEVEL ?? "info",
+      target: 'pino/file',
+      level: process.env.LOG_LEVEL ?? 'info',
       options: {
         // Example: ./logs/app-2023-10-27-14-30-05.log
         destination: `./.logs/app-${timestamp}.log`,

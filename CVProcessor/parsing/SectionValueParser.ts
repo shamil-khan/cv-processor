@@ -9,20 +9,20 @@ import type {
   Personal,
   ProjectEntry,
   SocialEntry,
-} from "@/CVProcessor/domain";
+} from '@/CVProcessor/domain';
 import {
   JsonValueReader,
   ParseContext,
   type UnknownRecord,
-} from "@/CVProcessor/validation";
+} from '@/CVProcessor/validation';
 
 export class SectionValueParser {
   static parseDuration(value: unknown, context: ParseContext): Duration {
     const durationRecord = JsonValueReader.readRecord(value, context);
 
     return {
-      from: JsonValueReader.readString(durationRecord.from, context.field("from")),
-      to: JsonValueReader.readString(durationRecord.to, context.field("to")),
+      from: JsonValueReader.readString(durationRecord.from, context.field('from')),
+      to: JsonValueReader.readString(durationRecord.to, context.field('to')),
     };
   }
 
@@ -30,19 +30,19 @@ export class SectionValueParser {
     const personalRecord = JsonValueReader.readRecord(value, context);
 
     return {
-      name: JsonValueReader.readString(personalRecord.name, context.field("name")),
+      name: JsonValueReader.readString(personalRecord.name, context.field('name')),
       titles: JsonValueReader.readStringArray(
         personalRecord.titles,
-        context.field("titles"),
+        context.field('titles'),
       ),
       location: JsonValueReader.readString(
         personalRecord.location,
-        context.field("location"),
+        context.field('location'),
       ),
-      phone: JsonValueReader.readString(personalRecord.phone, context.field("phone")),
-      email: JsonValueReader.readString(personalRecord.email, context.field("email")),
+      phone: JsonValueReader.readString(personalRecord.phone, context.field('phone')),
+      email: JsonValueReader.readString(personalRecord.email, context.field('email')),
       photo: this.readOptionalString(personalRecord.photo),
-      social: this.parseSocialEntries(personalRecord.social, context.field("social")),
+      social: this.parseSocialEntries(personalRecord.social, context.field('social')),
     };
   }
 
@@ -50,10 +50,10 @@ export class SectionValueParser {
     const labelRecord = JsonValueReader.readRecord(value, context);
 
     return {
-      label: JsonValueReader.readString(labelRecord.label, context.field("label")),
+      label: JsonValueReader.readString(labelRecord.label, context.field('label')),
       values: JsonValueReader.readStringArray(
         labelRecord.values,
-        context.field("values"),
+        context.field('values'),
       ),
     };
   }
@@ -62,20 +62,20 @@ export class SectionValueParser {
     const labelRecord = JsonValueReader.readRecord(value, context);
 
     return {
-      label: JsonValueReader.readString(labelRecord.label, context.field("label")),
-      value1: JsonValueReader.readString(labelRecord.value1, context.field("value1")),
-      value2: JsonValueReader.readString(labelRecord.value2, context.field("value2")),
+      label: JsonValueReader.readString(labelRecord.label, context.field('label')),
+      value1: JsonValueReader.readString(labelRecord.value1, context.field('value1')),
+      value2: JsonValueReader.readString(labelRecord.value2, context.field('value2')),
     };
   }
 
   static parseLabelValue1(value: unknown, context: ParseContext): LabelValue1 {
     const labelRecord = JsonValueReader.readRecord(value, context);
     const resolvedValue =
-      typeof labelRecord.value === "string" ? labelRecord.value : labelRecord.value1;
+      typeof labelRecord.value === 'string' ? labelRecord.value : labelRecord.value1;
 
     return {
-      label: JsonValueReader.readString(labelRecord.label, context.field("label")),
-      value: JsonValueReader.readString(resolvedValue, context.field("value")),
+      label: JsonValueReader.readString(labelRecord.label, context.field('label')),
+      value: JsonValueReader.readString(resolvedValue, context.field('value')),
     };
   }
 
@@ -83,33 +83,33 @@ export class SectionValueParser {
     const experienceRecord = JsonValueReader.readRecord(value, context);
     const techRecords = JsonValueReader.readRecordArray(
       experienceRecord.techs,
-      context.field("techs"),
+      context.field('techs'),
     );
 
     return {
       position: JsonValueReader.readString(
         experienceRecord.position,
-        context.field("position"),
+        context.field('position'),
       ),
       company: JsonValueReader.readString(
         experienceRecord.company,
-        context.field("company"),
+        context.field('company'),
       ),
       location: JsonValueReader.readString(
         experienceRecord.location,
-        context.field("location"),
+        context.field('location'),
       ),
       country: JsonValueReader.readString(
         experienceRecord.country,
-        context.field("country"),
+        context.field('country'),
       ),
-      duration: this.parseDuration(experienceRecord.duration, context.field("duration")),
+      duration: this.parseDuration(experienceRecord.duration, context.field('duration')),
       techs: techRecords.map((tech, index) =>
-        this.parseLabelValues(tech, context.field("techs").index(index)),
+        this.parseLabelValues(tech, context.field('techs').index(index)),
       ),
       highlights: JsonValueReader.readStringArray(
         experienceRecord.highlights,
-        context.field("highlights"),
+        context.field('highlights'),
       ),
     };
   }
@@ -120,20 +120,20 @@ export class SectionValueParser {
     return {
       institution: JsonValueReader.readString(
         educationRecord.institution,
-        context.field("institution"),
+        context.field('institution'),
       ),
-      degree: JsonValueReader.readString(educationRecord.degree, context.field("degree")),
-      field: JsonValueReader.readString(educationRecord.field, context.field("field")),
-      location: this.readOptionalString(educationRecord.location) ?? "",
-      country: this.readOptionalString(educationRecord.country) ?? "",
-      duration: this.parseDuration(educationRecord.duration, context.field("duration")),
+      degree: JsonValueReader.readString(educationRecord.degree, context.field('degree')),
+      field: JsonValueReader.readString(educationRecord.field, context.field('field')),
+      location: this.readOptionalString(educationRecord.location) ?? '',
+      country: this.readOptionalString(educationRecord.country) ?? '',
+      duration: this.parseDuration(educationRecord.duration, context.field('duration')),
       courses: JsonValueReader.readStringArray(
         educationRecord.courses,
-        context.field("courses"),
+        context.field('courses'),
       ),
       highlights: JsonValueReader.readStringArray(
         educationRecord.highlights,
-        context.field("highlights"),
+        context.field('highlights'),
       ),
     };
   }
@@ -148,7 +148,7 @@ export class SectionValueParser {
       detail: this.readOptionalString(projectRecord.detail),
       githubRepo: this.readOptionalString(projectRecord.githubRepo),
       techs: Array.isArray(projectRecord.techs)
-        ? JsonValueReader.readStringArray(projectRecord.techs, context.field("techs"))
+        ? JsonValueReader.readStringArray(projectRecord.techs, context.field('techs'))
         : [],
       snapshot: this.readOptionalString(projectRecord.snapshot),
     };
@@ -174,7 +174,7 @@ export class SectionValueParser {
     context: ParseContext,
   ): UnknownRecord[] {
     if (Array.isArray(section.labels)) {
-      return JsonValueReader.readRecordArray(section.labels, context.field("labels"));
+      return JsonValueReader.readRecordArray(section.labels, context.field('labels'));
     }
 
     throw new Error(`${context} must include labels array.`);
@@ -205,7 +205,7 @@ export class SectionValueParser {
   }
 
   private static readOptionalString(value: unknown): string | undefined {
-    if (typeof value !== "string") {
+    if (typeof value !== 'string') {
       return undefined;
     }
 

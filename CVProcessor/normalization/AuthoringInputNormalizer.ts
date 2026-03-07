@@ -22,11 +22,11 @@ import type {
   SectionType,
   SocialEntry,
   ValueSection,
-} from "@/CVProcessor/domain";
-import type { AppLogger } from "@/CVProcessor/logging";
-import type { UnknownRecord } from "@/CVProcessor/validation";
-import type { AuthoringProfile } from "./AuthoringProfile";
-import { AuthoringProfileRegistry } from "./AuthoringProfileRegistry";
+} from '@/CVProcessor/domain';
+import type { AppLogger } from '@/CVProcessor/logging';
+import type { UnknownRecord } from '@/CVProcessor/validation';
+import type { AuthoringProfile } from './AuthoringProfile';
+import { AuthoringProfileRegistry } from './AuthoringProfileRegistry';
 
 export class AuthoringInputNormalizer {
   constructor(
@@ -38,7 +38,7 @@ export class AuthoringInputNormalizer {
     const documentRecord = this.toRecord(input);
     const profile = this.profileRegistry.resolve(documentRecord);
 
-    this.logger.info("authoring profile resolved", {
+    this.logger.info('authoring profile resolved', {
       profile: profile.id,
       direction: profile.direction,
     });
@@ -50,8 +50,8 @@ export class AuthoringInputNormalizer {
     );
 
     if (!requiredName) {
-      this.logger.error("personal name is missing");
-      throw new Error("name is required.");
+      this.logger.error('personal name is missing');
+      throw new Error('name is required.');
     }
 
     const sectionTypeCount = new Map<SectionType, number>();
@@ -71,7 +71,7 @@ export class AuthoringInputNormalizer {
       sections.push(summarySection);
       this.logSectionFound(summarySection.type);
     } else {
-      this.logSectionMissing("value-section");
+      this.logSectionMissing('value-section');
     }
 
     const skillsSection = this.buildSkillsSection(
@@ -86,7 +86,7 @@ export class AuthoringInputNormalizer {
         labels: skillsSection.labels.length,
       });
     } else {
-      this.logSectionMissing("label-values-section");
+      this.logSectionMissing('label-values-section');
     }
 
     const experienceSection = this.buildExperienceSection(
@@ -101,7 +101,7 @@ export class AuthoringInputNormalizer {
         experiences: experienceSection.experiences.length,
       });
     } else {
-      this.logSectionMissing("experience-section");
+      this.logSectionMissing('experience-section');
     }
 
     const educationSection = this.buildEducationSection(
@@ -116,7 +116,7 @@ export class AuthoringInputNormalizer {
         educations: educationSection.educations.length,
       });
     } else {
-      this.logSectionMissing("education-section");
+      this.logSectionMissing('education-section');
     }
 
     const awardsSection = this.buildAwardsSection(
@@ -131,7 +131,7 @@ export class AuthoringInputNormalizer {
         labels: awardsSection.labels.length,
       });
     } else {
-      this.logSectionMissing("label-value2-section");
+      this.logSectionMissing('label-value2-section');
     }
 
     const additionalSection = this.buildAdditionalSection(
@@ -146,7 +146,7 @@ export class AuthoringInputNormalizer {
         labels: additionalSection.labels.length,
       });
     } else {
-      this.logSectionMissing("label-value1-section");
+      this.logSectionMissing('label-value1-section');
     }
 
     const projectsSection = this.buildProjectsSection(
@@ -161,7 +161,7 @@ export class AuthoringInputNormalizer {
         projects: projectsSection.projects.length,
       });
     } else {
-      this.logSectionMissing("projects-section");
+      this.logSectionMissing('projects-section');
     }
 
     const certificationsSection = this.buildCertificationsSection(
@@ -176,7 +176,7 @@ export class AuthoringInputNormalizer {
         certifications: certificationsSection.certifications.length,
       });
     } else {
-      this.logSectionMissing("certifications-section");
+      this.logSectionMissing('certifications-section');
     }
 
     const interestsSection = this.buildInterestsSection(
@@ -191,10 +191,10 @@ export class AuthoringInputNormalizer {
         items: interestsSection.items.length,
       });
     } else {
-      this.logSectionMissing("interests-section");
+      this.logSectionMissing('interests-section');
     }
 
-    this.logger.info("authoring normalization completed", {
+    this.logger.info('authoring normalization completed', {
       sections: sections.length,
     });
 
@@ -210,14 +210,14 @@ export class AuthoringInputNormalizer {
     const location =
       this.readStringFromSources(personalSources, profile.aliases.location) ??
       this.readStringFromSources(personalSources, profile.aliases.country) ??
-      "";
+      '';
 
     const info: Personal = {
       name: requiredName,
       titles: this.readStringArrayFromSources(personalSources, profile.aliases.titles),
       location,
-      phone: this.readStringFromSources(personalSources, profile.aliases.phone) ?? "",
-      email: this.readStringFromSources(personalSources, profile.aliases.email) ?? "",
+      phone: this.readStringFromSources(personalSources, profile.aliases.phone) ?? '',
+      email: this.readStringFromSources(personalSources, profile.aliases.email) ?? '',
       photo: this.readStringFromSources(personalSources, profile.aliases.photo),
       social: this.parseSocialEntries(personalSources, profile),
     };
@@ -225,8 +225,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.personal;
 
     return {
-      type: "personal-section",
-      id: this.nextSectionId("personal-section", sectionTypeCount),
+      type: 'personal-section',
+      id: this.nextSectionId('personal-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       info,
@@ -247,8 +247,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.summary;
 
     return {
-      type: "value-section",
-      id: this.nextSectionId("value-section", sectionTypeCount),
+      type: 'value-section',
+      id: this.nextSectionId('value-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       value: summary,
@@ -262,7 +262,7 @@ export class AuthoringInputNormalizer {
   ): LabelValuesSection | undefined {
     const skillRecords = this.readRecordArray(documentRecord, profile.aliases.skills);
 
-    this.logger.debug("skills entries discovered", {
+    this.logger.debug('skills entries discovered', {
       entries: skillRecords.length,
     });
 
@@ -272,7 +272,7 @@ export class AuthoringInputNormalizer {
       const label =
         this.readString(skillRecord, profile.aliases.category) ??
         this.readString(skillRecord, profile.aliases.label) ??
-        "";
+        '';
       const values = this.readStringArray(skillRecord, profile.aliases.items);
 
       if (label || values.length > 0) {
@@ -281,7 +281,7 @@ export class AuthoringInputNormalizer {
           values,
         });
       } else {
-        this.logger.warn("skills entry rejected due to missing label and values", {
+        this.logger.warn('skills entry rejected due to missing label and values', {
           entryIndex: skillIndex,
         });
       }
@@ -294,8 +294,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.skills;
 
     return {
-      type: "label-values-section",
-      id: this.nextSectionId("label-values-section", sectionTypeCount),
+      type: 'label-values-section',
+      id: this.nextSectionId('label-values-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       labels,
@@ -312,7 +312,7 @@ export class AuthoringInputNormalizer {
       profile.aliases.experience,
     );
 
-    this.logger.debug("experience entries discovered", {
+    this.logger.debug('experience entries discovered', {
       entries: experienceRecords.length,
     });
 
@@ -331,10 +331,10 @@ export class AuthoringInputNormalizer {
       );
 
       const experience: ExperienceEntry = {
-        position: this.readString(experienceRecord, profile.aliases.position) ?? "",
-        company: this.readString(experienceRecord, profile.aliases.company) ?? "",
-        location: this.readString(experienceRecord, profile.aliases.location) ?? "",
-        country: this.readString(experienceRecord, profile.aliases.country) ?? "",
+        position: this.readString(experienceRecord, profile.aliases.position) ?? '',
+        company: this.readString(experienceRecord, profile.aliases.company) ?? '',
+        location: this.readString(experienceRecord, profile.aliases.location) ?? '',
+        country: this.readString(experienceRecord, profile.aliases.country) ?? '',
         duration,
         techs,
         highlights,
@@ -345,7 +345,7 @@ export class AuthoringInputNormalizer {
       if (this.hasMeaningfulExperience(experience)) {
         experiences.push(experience);
       } else {
-        this.logger.warn("experience entry rejected due to insufficient data", {
+        this.logger.warn('experience entry rejected due to insufficient data', {
           entryIndex: experienceIndex,
         });
       }
@@ -358,8 +358,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.experience;
 
     return {
-      type: "experience-section",
-      id: this.nextSectionId("experience-section", sectionTypeCount),
+      type: 'experience-section',
+      id: this.nextSectionId('experience-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       experiences,
@@ -376,7 +376,7 @@ export class AuthoringInputNormalizer {
       profile.aliases.education,
     );
 
-    this.logger.debug("education entries discovered", {
+    this.logger.debug('education entries discovered', {
       entries: educationRecords.length,
     });
 
@@ -389,11 +389,11 @@ export class AuthoringInputNormalizer {
         `education[${educationIndex}]`,
       );
       const education: EducationEntry = {
-        institution: this.readString(educationRecord, profile.aliases.institution) ?? "",
-        degree: this.readString(educationRecord, profile.aliases.degree) ?? "",
-        field: this.readString(educationRecord, profile.aliases.field) ?? "",
-        location: this.readString(educationRecord, profile.aliases.location) ?? "",
-        country: this.readString(educationRecord, profile.aliases.country) ?? "",
+        institution: this.readString(educationRecord, profile.aliases.institution) ?? '',
+        degree: this.readString(educationRecord, profile.aliases.degree) ?? '',
+        field: this.readString(educationRecord, profile.aliases.field) ?? '',
+        location: this.readString(educationRecord, profile.aliases.location) ?? '',
+        country: this.readString(educationRecord, profile.aliases.country) ?? '',
         duration,
         courses: this.readStringArray(educationRecord, profile.aliases.courses),
         highlights: this.readStringArray(educationRecord, profile.aliases.highlights),
@@ -404,7 +404,7 @@ export class AuthoringInputNormalizer {
       if (this.hasMeaningfulEducation(education)) {
         educations.push(education);
       } else {
-        this.logger.warn("education entry rejected due to insufficient data", {
+        this.logger.warn('education entry rejected due to insufficient data', {
           entryIndex: educationIndex,
         });
       }
@@ -417,8 +417,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.education;
 
     return {
-      type: "education-section",
-      id: this.nextSectionId("education-section", sectionTypeCount),
+      type: 'education-section',
+      id: this.nextSectionId('education-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       educations,
@@ -435,9 +435,9 @@ export class AuthoringInputNormalizer {
 
     awardRecords.forEach((awardRecord) => {
       const label: LabelValue2 = {
-        label: this.readString(awardRecord, profile.aliases.title) ?? "",
-        value1: this.readString(awardRecord, profile.aliases.issuer) ?? "",
-        value2: this.readString(awardRecord, profile.aliases.year) ?? "",
+        label: this.readString(awardRecord, profile.aliases.title) ?? '',
+        value1: this.readString(awardRecord, profile.aliases.issuer) ?? '',
+        value2: this.readString(awardRecord, profile.aliases.year) ?? '',
       };
 
       if (label.label || label.value1 || label.value2) {
@@ -452,8 +452,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.awards;
 
     return {
-      type: "label-value2-section",
-      id: this.nextSectionId("label-value2-section", sectionTypeCount),
+      type: 'label-value2-section',
+      id: this.nextSectionId('label-value2-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       labels,
@@ -488,8 +488,8 @@ export class AuthoringInputNormalizer {
           const label =
             this.readString(entry, profile.aliases.label) ??
             this.readString(entry, profile.aliases.title) ??
-            "";
-          const value = this.readString(entry, profile.aliases.value) ?? "";
+            '';
+          const value = this.readString(entry, profile.aliases.value) ?? '';
 
           if (label || value) {
             labels.push({ label, value });
@@ -504,8 +504,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.additional;
 
     return {
-      type: "label-value1-section",
-      id: this.nextSectionId("label-value1-section", sectionTypeCount),
+      type: 'label-value1-section',
+      id: this.nextSectionId('label-value1-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       labels,
@@ -551,8 +551,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.projects;
 
     return {
-      type: "projects-section",
-      id: this.nextSectionId("projects-section", sectionTypeCount),
+      type: 'projects-section',
+      id: this.nextSectionId('projects-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       projects,
@@ -595,8 +595,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.certifications;
 
     return {
-      type: "certifications-section",
-      id: this.nextSectionId("certifications-section", sectionTypeCount),
+      type: 'certifications-section',
+      id: this.nextSectionId('certifications-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       certifications,
@@ -617,8 +617,8 @@ export class AuthoringInputNormalizer {
     const caption = profile.captions.interests;
 
     return {
-      type: "interests-section",
-      id: this.nextSectionId("interests-section", sectionTypeCount),
+      type: 'interests-section',
+      id: this.nextSectionId('interests-section', sectionTypeCount),
       name: caption.name,
       title: caption.title,
       items,
@@ -642,11 +642,11 @@ export class AuthoringInputNormalizer {
     }
 
     const paragraphs = summaryValue
-      .map((entry) => this.toDisplayString(entry) ?? "")
+      .map((entry) => this.toDisplayString(entry) ?? '')
       .map((entry) => entry.trim())
       .filter((entry) => entry.length > 0);
 
-    return paragraphs.length > 0 ? paragraphs.join("\n\n") : undefined;
+    return paragraphs.length > 0 ? paragraphs.join('\n\n') : undefined;
   }
 
   private parseTechLabels(
@@ -662,13 +662,13 @@ export class AuthoringInputNormalizer {
     const labels: LabelValues[] = [];
 
     const directValues = techValue
-      .map((entry) => this.toDisplayString(entry) ?? "")
+      .map((entry) => this.toDisplayString(entry) ?? '')
       .map((entry) => entry.trim())
       .filter((entry) => entry.length > 0);
 
     if (directValues.length > 0) {
       labels.push({
-        label: "",
+        label: '',
         values: directValues,
       });
     }
@@ -679,7 +679,7 @@ export class AuthoringInputNormalizer {
         const label =
           this.readString(entry, profile.aliases.category) ??
           this.readString(entry, profile.aliases.label) ??
-          "";
+          '';
         const values = this.readStringArray(entry, profile.aliases.items);
 
         if (label || values.length > 0) {
@@ -711,23 +711,23 @@ export class AuthoringInputNormalizer {
     const durationValue = this.readFirstValue(record, profile.aliases.duration);
 
     if (durationValue === undefined) {
-      this.logger.warn("duration field is not provided", {
+      this.logger.warn('duration field is not provided', {
         context,
-        expected: ["from", "to"],
+        expected: ['from', 'to'],
       });
 
       return {
-        from: "",
-        to: "",
+        from: '',
+        to: '',
       };
     }
 
     if (this.isRecord(durationValue)) {
-      const from = this.readString(durationValue, profile.aliases.from) ?? "";
-      const to = this.readString(durationValue, profile.aliases.to) ?? "";
+      const from = this.readString(durationValue, profile.aliases.from) ?? '';
+      const to = this.readString(durationValue, profile.aliases.to) ?? '';
 
       if (!from || !to) {
-        this.logger.warn("duration object is missing expected from/to", {
+        this.logger.warn('duration object is missing expected from/to', {
           context,
           hasFrom: Boolean(from),
           hasTo: Boolean(to),
@@ -737,15 +737,15 @@ export class AuthoringInputNormalizer {
       return { from, to };
     }
 
-    if (typeof durationValue === "string") {
+    if (typeof durationValue === 'string') {
       const normalizedDuration = durationValue.trim();
 
       if (normalizedDuration.length === 0) {
-        this.logger.warn("duration string is empty", {
+        this.logger.warn('duration string is empty', {
           context,
         });
 
-        return { from: "", to: "" };
+        return { from: '', to: '' };
       }
 
       const parts = this.splitDuration(normalizedDuration, profile.durationDelimiters);
@@ -753,37 +753,37 @@ export class AuthoringInputNormalizer {
       if (parts.length >= 2) {
         return {
           from: parts[0],
-          to: parts.slice(1).join(" - "),
+          to: parts.slice(1).join(' - '),
         };
       }
 
-      this.logger.warn("duration string did not split into from/to", {
+      this.logger.warn('duration string did not split into from/to', {
         context,
         value: normalizedDuration,
       });
 
       return {
         from: normalizedDuration,
-        to: "",
+        to: '',
       };
     }
 
-    this.logger.warn("duration has unsupported data type", {
+    this.logger.warn('duration has unsupported data type', {
       context,
       type: typeof durationValue,
     });
 
     return {
-      from: "",
-      to: "",
+      from: '',
+      to: '',
     };
   }
 
   private splitDuration(duration: string, delimiters: readonly string[]): string[] {
     const escapedDelimiters = delimiters.map((delimiter) =>
-      delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      delimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
     );
-    const pattern = new RegExp(`\\s*(?:${escapedDelimiters.join("|")})\\s*`, "i");
+    const pattern = new RegExp(`\\s*(?:${escapedDelimiters.join('|')})\\s*`, 'i');
 
     return duration
       .split(pattern)
@@ -821,9 +821,9 @@ export class AuthoringInputNormalizer {
     }
 
     if (entries.length === 0) {
-      this.logger.warn("no social links were provided in personal section");
+      this.logger.warn('no social links were provided in personal section');
     } else {
-      this.logger.info("social links parsed", {
+      this.logger.info('social links parsed', {
         links: entries.length,
       });
     }
@@ -900,14 +900,14 @@ export class AuthoringInputNormalizer {
     sectionType: SectionType,
     metadata?: Record<string, unknown>,
   ): void {
-    this.logger.info("section parsed", {
+    this.logger.info('section parsed', {
       sectionType,
       ...(metadata ?? {}),
     });
   }
 
   private logSectionMissing(sectionType: SectionType): void {
-    this.logger.debug("section not found", {
+    this.logger.debug('section not found', {
       sectionType,
     });
   }
@@ -916,38 +916,38 @@ export class AuthoringInputNormalizer {
     const missingFields: string[] = [];
 
     if (!experience.position) {
-      missingFields.push("position");
+      missingFields.push('position');
     }
 
     if (!experience.company) {
-      missingFields.push("company");
+      missingFields.push('company');
     }
 
     if (!experience.duration.from) {
-      missingFields.push("duration.from");
+      missingFields.push('duration.from');
     }
 
     if (!experience.duration.to) {
-      missingFields.push("duration.to");
+      missingFields.push('duration.to');
     }
 
     if (experience.highlights.length === 0) {
-      missingFields.push("highlights");
+      missingFields.push('highlights');
     }
 
     if (experience.techs.length === 0) {
-      missingFields.push("techs");
+      missingFields.push('techs');
     }
 
     if (missingFields.length > 0) {
-      this.logger.warn("experience entry has missing important fields", {
+      this.logger.warn('experience entry has missing important fields', {
         entryIndex,
         missingFields,
       });
       return;
     }
 
-    this.logger.debug("experience entry parsed successfully", {
+    this.logger.debug('experience entry parsed successfully', {
       entryIndex,
     });
   }
@@ -956,38 +956,38 @@ export class AuthoringInputNormalizer {
     const missingFields: string[] = [];
 
     if (!education.institution) {
-      missingFields.push("institution");
+      missingFields.push('institution');
     }
 
     if (!education.degree) {
-      missingFields.push("degree");
+      missingFields.push('degree');
     }
 
     if (!education.duration.from) {
-      missingFields.push("duration.from");
+      missingFields.push('duration.from');
     }
 
     if (!education.duration.to) {
-      missingFields.push("duration.to");
+      missingFields.push('duration.to');
     }
 
     if (education.courses.length === 0) {
-      missingFields.push("courses");
+      missingFields.push('courses');
     }
 
     if (education.highlights.length === 0) {
-      missingFields.push("highlights");
+      missingFields.push('highlights');
     }
 
     if (missingFields.length > 0) {
-      this.logger.warn("education entry has missing important fields", {
+      this.logger.warn('education entry has missing important fields', {
         entryIndex,
         missingFields,
       });
       return;
     }
 
-    this.logger.debug("education entry parsed successfully", {
+    this.logger.debug('education entry parsed successfully', {
       entryIndex,
     });
   }
@@ -1068,12 +1068,12 @@ export class AuthoringInputNormalizer {
 
     if (Array.isArray(value)) {
       return value
-        .map((entry) => this.toDisplayString(entry) ?? "")
+        .map((entry) => this.toDisplayString(entry) ?? '')
         .map((entry) => entry.trim())
         .filter((entry) => entry.length > 0);
     }
 
-    if (typeof value === "string" && value.trim().length > 0) {
+    if (typeof value === 'string' && value.trim().length > 0) {
       return [value.trim()];
     }
 
@@ -1135,11 +1135,11 @@ export class AuthoringInputNormalizer {
   }
 
   private toDisplayString(value: unknown): string | undefined {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return value;
     }
 
-    if (typeof value === "number" || typeof value === "boolean") {
+    if (typeof value === 'number' || typeof value === 'boolean') {
       return String(value);
     }
 
@@ -1148,13 +1148,13 @@ export class AuthoringInputNormalizer {
 
   private toRecord(input: unknown): UnknownRecord {
     if (!this.isRecord(input)) {
-      throw new Error("input must be an object.");
+      throw new Error('input must be an object.');
     }
 
     return input;
   }
 
   private isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 }

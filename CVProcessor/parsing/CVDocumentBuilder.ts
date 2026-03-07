@@ -1,4 +1,4 @@
-import type { CVDocument, CVSection } from "@/CVProcessor/domain";
+import type { CVDocument, CVSection } from '@/CVProcessor/domain';
 
 export class CVDocumentBuilder {
   private readonly sections: CVSection[] = [];

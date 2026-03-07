@@ -1,14 +1,14 @@
-import type { UnknownRecord } from "@/CVProcessor/validation";
-import type { AuthoringProfile } from "./AuthoringProfile";
-import { englishProfile, urduProfile } from "./profiles";
+import type { UnknownRecord } from '@/CVProcessor/validation';
+import type { AuthoringProfile } from './AuthoringProfile';
+import { englishProfile, urduProfile } from './profiles';
 
-const LOCALE_ALIASES = ["locale", "language", "lang", "لوکیل", "زبان"];
-const META_ALIASES = ["meta", "metadata", "میٹا"];
+const LOCALE_ALIASES = ['locale', 'language', 'lang', 'لوکیل', 'زبان'];
+const META_ALIASES = ['meta', 'metadata', 'میٹا'];
 
 export class AuthoringProfileRegistry {
   constructor(
     private readonly profiles: AuthoringProfile[],
-    private readonly fallbackProfileId = "en",
+    private readonly fallbackProfileId = 'en',
   ) {}
 
   static createDefault(): AuthoringProfileRegistry {
@@ -89,7 +89,7 @@ export class AuthoringProfileRegistry {
   ): string | undefined {
     const value = this.readFirstValue(record, aliases);
 
-    return typeof value === "string" ? value : undefined;
+    return typeof value === 'string' ? value : undefined;
   }
 
   private readFirstRecord(
@@ -124,6 +124,6 @@ export class AuthoringProfileRegistry {
   }
 
   private isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 }

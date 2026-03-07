@@ -1,10 +1,10 @@
-import type { CVSection, SectionType } from "@/CVProcessor/domain";
+import type { CVSection, SectionType } from '@/CVProcessor/domain';
 import {
   JsonValueReader,
   ParseContext,
   type UnknownRecord,
-} from "@/CVProcessor/validation";
-import type { SectionParser } from "./SectionParser";
+} from '@/CVProcessor/validation';
+import type { SectionParser } from './SectionParser';
 
 export type SectionBase<TType extends SectionType> = {
   type: TType;
@@ -27,7 +27,7 @@ export abstract class BaseSectionParser<
   }
 
   private createSectionContext(index: number): ParseContext {
-    return ParseContext.root().field("sections").index(index);
+    return ParseContext.root().field('sections').index(index);
   }
 
   private parseSectionBase(
@@ -36,15 +36,15 @@ export abstract class BaseSectionParser<
     sectionContext: ParseContext,
   ): SectionBase<TType> {
     const id =
-      typeof section.id === "string" && section.id.trim().length > 0
+      typeof section.id === 'string' && section.id.trim().length > 0
         ? section.id
         : `${this.type}-${index + 1}`;
 
     return {
       type: this.type,
       id,
-      name: JsonValueReader.readString(section.name, sectionContext.field("name")),
-      title: JsonValueReader.readString(section.title, sectionContext.field("title")),
+      name: JsonValueReader.readString(section.name, sectionContext.field('name')),
+      title: JsonValueReader.readString(section.title, sectionContext.field('title')),
     };
   }
 

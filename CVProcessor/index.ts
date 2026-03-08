@@ -6,3 +6,4 @@ export * from './logging';
 export * from './normalization';
 export * from './parsing';
 export * from './validation';
+export * from './CVProcessorClient';

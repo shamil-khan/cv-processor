@@ -1,7 +1,10 @@
 node_modules
+
+
 .logs
 dist
-!release
+release
+
 .env*
 !.env.sample
 !.env.test

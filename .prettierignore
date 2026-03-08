@@ -1,4 +1,8 @@
 node_modules
-dist
 pnpm-lock.yaml
-cv-data
+
+**cv-data/**
+
+.logs
+dist
+release

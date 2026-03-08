@@ -4,7 +4,8 @@
   "description": "This library process user friendly cv files in json, toml and yaml/yml format and delivers typescript model, which we can use for any purpose like redering UI, generate stylish cv docx etc. It supports multi language.",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json --noEmit && echo \"✅ Success: Dist Build done. ⚙️ \"",
+    "build:dist": "tsup CVProcessor/index.ts --out-dir dist --format cjs,esm --dts --minify --clean && echo \"✅ Success: Release Build done. ⚙️ \"",
     "dev": "tsx --env-file=.env  index.ts",
     "watch": "tsx watch --env-file=.env index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -14,13 +15,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "clean": "rm -rf ./.logs ./node_modules/ ./release/ ./pnpm-lock.yaml && echo \"✅ Cleanup done.\"",
-    "release:check:internal": "git diff-index --quiet HEAD -- && echo \"✅ Success: You have no local changes.\" || (echo \"❌ Error: You have uncommitted changes. Commit your source code first!\" && exit 1)",
-    "release:build:internal": "pnpm run release:check:internal && tsup CVProcessor/index.ts --out-dir release --format cjs,esm --dts --minify --clean && echo \"✅ Success: Build done. ⚙️ \"",
-    "release:patch": "pnpm run release:build:internal && pnpm version patch --no-git-tag-version && echo \"✅ Patch Version updated. 🛠️\" && git add release/ package.json && git commit -m \"chore: PATCH released\" && echo \"✅ Success: The PATCH released successfully. Ready to push. 🔥 🚀\"",
-    "release:minor": "pnpm run release:build:internal && pnpm version minor --no-git-tag-version && echo \"✅ Minor Version updated. 🛠️\" && git add release/ package.json && git commit -m \"chore: MINOR Version released\" && echo \"✅ Success: The MINOR version released successfully. Ready to push. 💥 🚀\"",
-    "release:undo:strict": "git reset --mixed HEAD~1",
-    "release:push": "git push --follow-tags"
+    "clean": "rm -rf ./node_modules/ ./.logs ./dist ./pnpm-lock.yaml && echo \"✅ Cleanup done.\""
   },
   "keywords": [
     "CV Parser",

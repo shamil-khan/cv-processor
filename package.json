@@ -1,6 +1,6 @@
 {
   "name": "cv-processor",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "This library process user friendly cv files in json, toml and yaml/yml format and delivers typescript model, which we can use for any purpose like redering UI, generate stylish cv docx etc. It supports multi language.",
   "type": "module",
   "scripts": {

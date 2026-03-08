@@ -44,17 +44,17 @@
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
-  "main": "./release/index.cjs",
-  "module": "./release/index.js",
-  "types": "./release/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./release/index.d.ts",
-      "import": "./release/index.js",
-      "require": "./release/index.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
-    "release"
+    "dist"
   ]
 }

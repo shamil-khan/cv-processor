@@ -2,3 +2,6 @@ node_modules
 .logs
 dist
 !release
+.env*
+!.env.sample
+!.env.test

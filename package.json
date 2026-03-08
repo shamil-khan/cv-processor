@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json --noEmit",
-    "dev": "tsx index.ts",
-    "watch": "tsx watch index.ts",
+    "dev": "tsx --env-file=.env  index.ts",
+    "watch": "tsx watch --env-file=.env index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "clean": "rm -rf ./node_modules/ ./release/ ./pnpm-lock.yaml && echo \"✅ Cleanup done.\"",
+    "clean": "rm -rf ./.logs ./node_modules/ ./release/ ./pnpm-lock.yaml && echo \"✅ Cleanup done.\"",
     "release:check:internal": "git diff-index --quiet HEAD -- && echo \"✅ Success: You have no local changes.\" || (echo \"❌ Error: You have uncommitted changes. Commit your source code first!\" && exit 1)",
     "release:build:internal": "pnpm run release:check:internal && tsup CVProcessor/index.ts --out-dir release --format cjs,esm --dts --minify --clean && echo \"✅ Success: Build done. ⚙️ \"",
     "release:patch": "pnpm run release:build:internal && pnpm version patch --no-git-tag-version && echo \"✅ Patch Version updated. 🛠️\" && git add release/ package.json && git commit -m \"chore: PATCH released\" && echo \"✅ Success: The PATCH released successfully. Ready to push. 🔥 🚀\"",
@@ -32,7 +32,6 @@
   "dependencies": {
     "awilix": "^12.0.5",
     "pino": "^9.14.0",
-    "pino-pretty": "^13.1.2",
     "smol-toml": "^1.4.2",
     "yaml": "^2.8.1"
   },
@@ -43,6 +42,7 @@
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
+    "pino-pretty": "^13.1.3",
     "prettier": "^3.6.2",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",

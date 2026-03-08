@@ -1,4 +1,4 @@
-import { asFunction, asValue, createContainer, type AwilixContainer } from 'awilix';
+import { asFunction, createContainer, type AwilixContainer } from 'awilix';
 import {
   CVDocumentContentParserFacade,
   CVDocumentParserFacade,
@@ -9,7 +9,14 @@ import {
   TomlContentDeserializer,
   YamlContentDeserializer,
 } from '@/CVProcessor/deserialization';
-import { type AppLogger, LoggerFactory } from '@/CVProcessor/logging';
+import {
+  type AppLogger,
+  type LoggerDecorator,
+  TestDecorator,
+  NodeDecorator,
+  WebDecorator,
+  LoggerFactory,
+} from '@/CVProcessor/logging';
 import {
   AuthoringInputNormalizer,
   AuthoringProfileRegistry,
@@ -17,6 +24,8 @@ import {
 import { CVDocumentParser, SectionParserFactory } from '@/CVProcessor/parsing';
 
 export interface CVProcessorCradle {
+  loggerDecorator: LoggerDecorator;
+  loggerFactory: LoggerFactory;
   rootLogger: AppLogger;
   sectionParserFactory: SectionParserFactory;
   cvDocumentParser: CVDocumentParser;
@@ -34,7 +43,21 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
   const container = createContainer<CVProcessorCradle>();
 
   container.register({
-    rootLogger: asValue(LoggerFactory.getLogger('CVProcessor')),
+    loggerDecorator: asFunction(() => {
+      const isNode = typeof process !== 'undefined' && !!process.versions?.node;
+      const isProduction = process.env.NODE_ENV === 'production';
+      const isTest = process.env.NODE_ENV === 'test';
+      const decorator: LoggerDecorator = isTest
+        ? new TestDecorator()
+        : isNode && !isProduction
+          ? new NodeDecorator()
+          : new WebDecorator();
+      return decorator;
+    }).singleton(),
+    loggerFactory: asFunction(
+      ({ loggerDecorator }) => new LoggerFactory(loggerDecorator),
+    ).singleton(),
+    rootLogger: asFunction(({ loggerFactory }) => loggerFactory.getLogger('CVProcessor')),
     sectionParserFactory: asFunction(() =>
       SectionParserFactory.createDefault(),
     ).singleton(),

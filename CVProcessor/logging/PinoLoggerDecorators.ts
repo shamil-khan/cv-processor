@@ -3,6 +3,7 @@ import pino, {
   type LoggerOptions,
   type TransportTargetOptions,
 } from 'pino';
+import type { LoggingEnvironment } from './LoggingEnvironment';
 
 export interface LoggerDecorator {
   decorate(options: LoggerOptions): {
@@ -34,6 +35,8 @@ export class WebDecorator implements LoggerDecorator {
 }
 
 export class NodeDecorator implements LoggerDecorator {
+  constructor(private readonly environment: LoggingEnvironment) {}
+
   decorate = (options: LoggerOptions) => {
     const targets = [
       this.resolvePrettyTransport(),
@@ -47,8 +50,9 @@ export class NodeDecorator implements LoggerDecorator {
   };
 
   private resolvePrettyTransport = (): TransportTargetOptions | null =>
-    process.env.LOG_PRETTY === 'true'
-      ? {
+    this.environment.getOrDefault('logPretty') === 'false'
+      ? null
+      : {
           target: 'pino-pretty',
           options: {
             colorize: true,
@@ -56,12 +60,11 @@ export class NodeDecorator implements LoggerDecorator {
             ignore: 'pid,hostname',
             singleLine: false,
           },
-        }
-      : null;
+        };
 
   private resolveLogFileTransport = (): TransportTargetOptions => ({
     target: 'pino/file',
-    level: process.env.LOG_LEVEL ?? 'info',
+    level: this.environment.getOrDefault('logLevel'),
     options: {
       // Example: ./logs/app-2023-02-25.log
       destination: `./.logs/app-${new Date().toISOString().split('T')[0]}.log`,

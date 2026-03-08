@@ -11,10 +11,10 @@ import {
 } from '@/CVProcessor/deserialization';
 import {
   type AppLogger,
+  GlobalLoggingEnvironment,
   type LoggerDecorator,
-  TestDecorator,
-  NodeDecorator,
-  WebDecorator,
+  LoggerDecoratorResolver,
+  type LoggingEnvironment,
   LoggerFactory,
 } from '@/CVProcessor/logging';
 import {
@@ -24,6 +24,8 @@ import {
 import { CVDocumentParser, SectionParserFactory } from '@/CVProcessor/parsing';
 
 export interface CVProcessorCradle {
+  loggingEnvironment: LoggingEnvironment;
+  loggerDecoratorResolver: LoggerDecoratorResolver;
   loggerDecorator: LoggerDecorator;
   loggerFactory: LoggerFactory;
   rootLogger: AppLogger;
@@ -43,19 +45,16 @@ export function createCVProcessorContainer(): AwilixContainer<CVProcessorCradle>
   const container = createContainer<CVProcessorCradle>();
 
   container.register({
-    loggerDecorator: asFunction(() => {
-      const isNode = typeof process !== 'undefined' && !!process.versions?.node;
-      const isProduction = process.env.NODE_ENV === 'production';
-      const isTest = process.env.NODE_ENV === 'test';
-      const decorator: LoggerDecorator = isTest
-        ? new TestDecorator()
-        : isNode && !isProduction
-          ? new NodeDecorator()
-          : new WebDecorator();
-      return decorator;
-    }).singleton(),
+    loggingEnvironment: asFunction(() => new GlobalLoggingEnvironment()).singleton(),
+    loggerDecoratorResolver: asFunction(
+      ({ loggingEnvironment }) => new LoggerDecoratorResolver(loggingEnvironment),
+    ).singleton(),
+    loggerDecorator: asFunction(({ loggerDecoratorResolver }) =>
+      loggerDecoratorResolver.resolve(),
+    ).singleton(),
     loggerFactory: asFunction(
-      ({ loggerDecorator }) => new LoggerFactory(loggerDecorator),
+      ({ loggerDecorator, loggingEnvironment }) =>
+        new LoggerFactory(loggerDecorator, loggingEnvironment),
     ).singleton(),
     rootLogger: asFunction(({ loggerFactory }) => loggerFactory.getLogger('CVProcessor')),
     sectionParserFactory: asFunction(() =>
